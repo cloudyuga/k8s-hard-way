@@ -7,16 +7,16 @@ Kubernetes by Hard way
 - List of the  Nodes.
 
 ```
-Node        IP                Internal IP
-master-1  139.59.0.92         10.139.24.57
-Master-2  159.65.154.90       10.139.216.224
-worker-1  159.65.154.143      10.139.56.60
-worker-2  159.65.154.166      10.139.184.152 
+Node        IP                          Private IP
+master-1  <master-1-Public-IP>         <master-1-Private-IP>
+Master-2  <master-2-Public-IP>         <master-2-Private-IP>
+worker-1  <worker-1-Public-IP>         <worker-1-Private-IP>
+worker-2  <worker-2-Public-IP>         <worker-2-Private-IP>
 ```
 
 - A load balancer.
 ```
-KUBERNETES_PUBLIC_ADDRESS = 174.138.122.121
+KUBERNETES_PUBLIC_ADDRESS = <LoadBalancer-Public-IP>
 ```
 
 
@@ -157,9 +157,9 @@ cat > worker-1-csr.json <<EOF
 }
 EOF
 
-EXTERNAL_IP=159.65.154.143
+EXTERNAL_IP=<worker-1-Public-IP>
 
-INTERNAL_IP=10.139.56.60
+INTERNAL_IP=<worker-1-Private-IP>
 
 cfssl gencert \
   -ca=ca.pem \
@@ -192,8 +192,9 @@ cat > worker-2-csr.json <<EOF
 }
 EOF
 
-EXTERNAL_IP=159.65.154.166
-INTERNAL_IP=10.139.184.152
+EXTERNAL_IP=<worker-2-Public-IP>
+
+INTERNAL_IP=<worker-2-Private-IP>
 
 
 cfssl gencert \
@@ -320,14 +321,14 @@ cfssl gencert \
 - Generate the Kubernetes API Server certificate and private key:
 
 ```
-MASTER_1_PRIVATE_IP=10.139.24.57
-MASTER_2_PRIVATE_IP=10.135.86.233
-MASTER_1_PUBLIC_IP=139.59.0.92
-MASTER_2_PUBLIC_IP=159.65.154.90
+MASTER_1_PRIVATE_IP=<master-1-Private-IP>
+MASTER_2_PRIVATE_IP=<master-2-Private-IP>
+MASTER_1_PUBLIC_IP=<master-1-Public-IP>
+MASTER_2_PUBLIC_IP=<master-2-Public-IP>
 
 {
 
-KUBERNETES_PUBLIC_ADDRESS=174.138.122.121
+KUBERNETES_PUBLIC_ADDRESS=<LoadBalancer-Public-IP>
 
 
 cat > kubernetes-csr.json <<EOF
@@ -353,7 +354,7 @@ cfssl gencert \
   -ca=ca.pem \
   -ca-key=ca-key.pem \
   -config=ca-config.json \
-  -hostname=10.32.0.1,10.139.24.57,10.139.216.224,139.59.0.92,159.65.154.90,${KUBERNETES_PUBLIC_ADDRESS},127.0.0.1,kubernetes.default \
+  -hostname=10.32.0.1,<master-1-Private-IP>,<master-2-Private-IP>,<master-1-Public-IP>,<master-2-Public-IP>,${KUBERNETES_PUBLIC_ADDRESS},127.0.0.1,kubernetes.default \
   -profile=kubernetes \
   kubernetes-csr.json | cfssljson -bare kubernetes
 
@@ -405,13 +406,13 @@ cfssl gencert \
 - To worker1
 ```
 
- scp ca.pem worker-1-key.pem worker-1.pem root@159.65.154.143:~/
+ scp ca.pem worker-1-key.pem worker-1.pem root@<worker-1-Public-IP>:~/
 
 ```
 
 - To worker2
 ```
- scp ca.pem worker-2-key.pem worker-2.pem root@159.65.154.166:~/
+ scp ca.pem worker-2-key.pem worker-2.pem root@<worker-2-Public-IP>:~/
 ```
 
 ## Generating Kubernetes Configuration Files for Authentication
@@ -430,7 +431,7 @@ When generating kubeconfig files for Kubelets the client certificate matching th
 
 ```
 {
-KUBERNETES_PUBLIC_ADDRESS=174.138.122.121
+KUBERNETES_PUBLIC_ADDRESS=<LoadBalancer-Public-IP>
 
 for instance in worker-1 worker-2; do
   kubectl config set-cluster kubernetes-the-hard-way \
@@ -463,7 +464,7 @@ done
 
 ```
 {
-  KUBERNETES_PUBLIC_ADDRESS=174.138.122.121
+  KUBERNETES_PUBLIC_ADDRESS=<LoadBalancer-Public-IP>
   
   
   kubectl config set-cluster kubernetes-the-hard-way \
@@ -576,12 +577,12 @@ Copy the appropriate `kubelet` and `kube-proxy` kubeconfig files to each worker 
 
 - worker-1
 ```
- scp worker-1.kubeconfig kube-proxy.kubeconfig root@159.65.154.143:~/
+ scp worker-1.kubeconfig kube-proxy.kubeconfig root@<worker-1-Public-IP>:~/
 ```
 
 - worker-2
 ```
- scp worker-2.kubeconfig kube-proxy.kubeconfig root@159.65.154.166:~/
+ scp worker-2.kubeconfig kube-proxy.kubeconfig root@<worker-2-Public-IP>:~/
 ```
 
 
@@ -625,13 +626,13 @@ EOF
 - For `master-1` node.
 
 ```
-scp ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem service-account-key.pem service-account.pem admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig encryption-config.yaml root@139.59.0.92:~/.
+scp ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem service-account-key.pem service-account.pem admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig encryption-config.yaml root@<master-1-Public-IP>:~/.
 ```
 
 - For `master-2` node.
 
 ```
-scp ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem service-account-key.pem service-account.pem admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig encryption-config.yaml root@159.65.154.90:~/.
+scp ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem service-account-key.pem service-account.pem admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig encryption-config.yaml root@<master-2-Public-IP>:~/.
 ```
 
 
@@ -676,7 +677,7 @@ wget -q --show-progress --https-only --timestamping \
 {
 
 ETCD_NAME=$(hostname -s)
-INTERNAL_IP=10.139.24.57
+INTERNAL_IP=<master-1-Private-IP>
 
 cat <<EOF | sudo tee /etc/systemd/system/etcd.service
 [Unit]
@@ -699,7 +700,7 @@ ExecStart=/usr/local/bin/etcd \\
   --listen-client-urls https://${INTERNAL_IP}:2379,https://127.0.0.1:2379 \\
   --advertise-client-urls https://${INTERNAL_IP}:2379 \\
   --initial-cluster-token etcd-cluster-0 \\
-  --initial-cluster master-1=https://10.139.24.57:2380,master-2=https://10.139.216.224:2380 \\
+  --initial-cluster master-1=https://<master-1-Private-IP>:2380,master-2=https://<master-2-Private-IP>:2380 \\
   --initial-cluster-state new \\
   --data-dir=/var/lib/etcd
 Restart=on-failure
@@ -718,7 +719,7 @@ EOF
 ```
 {
 ETCD_NAME=$(hostname -s)
-INTERNAL_IP=10.139.216.224
+INTERNAL_IP=<master-2-Private-IP>
 
 cat <<EOF | sudo tee /etc/systemd/system/etcd.service
 [Unit]
@@ -741,7 +742,7 @@ ExecStart=/usr/local/bin/etcd \\
   --listen-client-urls https://${INTERNAL_IP}:2379,https://127.0.0.1:2379 \\
   --advertise-client-urls https://${INTERNAL_IP}:2379 \\
   --initial-cluster-token etcd-cluster-0 \\
-  --initial-cluster master-1=https://10.139.24.57:2380,master-2=https://10.139.216.224:2380 \\
+  --initial-cluster master-1=https://<master-1-Private-IP>:2380,master-2=https://<master-2-Private-IP>:2380 \\
   --initial-cluster-state new \\
   --data-dir=/var/lib/etcd
 Restart=on-failure
@@ -780,7 +781,7 @@ sudo ETCDCTL_API=3 etcdctl member list \
 > output
 ```
 102a13d1003e5d5a, started, master-2, https://10.135.86.233:2380, https://10.135.86.233:2379
-f5ca186f2ed6cf38, started, master-1, https://10.139.24.57:2380, https://10.139.24.57:2379
+f5ca186f2ed6cf38, started, master-1, https://<master-1-Private-IP>:2380, https://<master-1-Private-IP>:2379
 
 ```
 
@@ -834,7 +835,7 @@ wget -q --show-progress --https-only --timestamping \
 
 ```
 
-INTERNAL_IP=10.139.24.57
+INTERNAL_IP=<master-1-Private-IP>
 
 cat <<EOF | sudo tee /etc/systemd/system/kube-apiserver.service
 [Unit]
@@ -858,7 +859,7 @@ ExecStart=/usr/local/bin/kube-apiserver \\
   --etcd-cafile=/var/lib/kubernetes/ca.pem \\
   --etcd-certfile=/var/lib/kubernetes/kubernetes.pem \\
   --etcd-keyfile=/var/lib/kubernetes/kubernetes-key.pem \\
-  --etcd-servers=https://10.139.24.57:2379,https://10.139.216.224:2379 \\
+  --etcd-servers=https://<master-1-Private-IP>:2379,https://<master-2-Private-IP>:2379 \\
   --event-ttl=1h \\
   --experimental-encryption-provider-config=/var/lib/kubernetes/encryption-config.yaml \\
   --kubelet-certificate-authority=/var/lib/kubernetes/ca.pem \\
@@ -884,7 +885,7 @@ EOF
 - Create the `kube-apiserver.service` systemd unit file on `master-2`:
 
 ```
-INTERNAL_IP=10.139.216.224
+INTERNAL_IP=<master-2-Private-IP>
 
 cat <<EOF | sudo tee /etc/systemd/system/kube-apiserver.service
 [Unit]
@@ -908,7 +909,7 @@ ExecStart=/usr/local/bin/kube-apiserver \\
   --etcd-cafile=/var/lib/kubernetes/ca.pem \\
   --etcd-certfile=/var/lib/kubernetes/kubernetes.pem \\
   --etcd-keyfile=/var/lib/kubernetes/kubernetes-key.pem \\
-  --etcd-servers=https://10.139.24.57:2379,https://10.139.216.224:2379 \\
+  --etcd-servers=https://<master-1-Private-IP>:2379,https://<master-2-Private-IP>:2379 \\
   --event-ttl=1h \\
   --experimental-encryption-provider-config=/var/lib/kubernetes/encryption-config.yaml \\
   --kubelet-certificate-authority=/var/lib/kubernetes/ca.pem \\
@@ -1159,7 +1160,7 @@ EOF
 - Make HTTPS request to get kubernetes version. We will use `master-2` Private IP.
 
 ```
-$ curl --cacert /etc/etcd/ca.pem https://10.139.216.224:6443/version
+$ curl --cacert /etc/etcd/ca.pem https://<master-2-Private-IP>:6443/version
 ```
 > output
 ```
@@ -1179,7 +1180,7 @@ $ curl --cacert /etc/etcd/ca.pem https://10.139.216.224:6443/version
 - Make HTTPS request to get kubernetes version. We will use `master-1` Private IP.
 
 ```
-$ curl --cacert /etc/etcd/ca.pem https://10.139.24.57:6443/version
+$ curl --cacert /etc/etcd/ca.pem https://<master-1-Private-IP>:6443/version
 ```
 > output
 ```
@@ -1200,7 +1201,7 @@ $ curl --cacert /etc/etcd/ca.pem https://10.139.24.57:6443/version
 - In Digital Ocean configure your load balancer with TCP rule to forward traffic from 6443 to 6443 port. and verify that we can access the kubernetes control plane using Load Balancer.
 
 ```
-$ curl --cacert /etc/etcd/ca.pem https://174.138.122.121:6443/version
+$ curl --cacert /etc/etcd/ca.pem https://<LoadBalancer-Public-IP>:6443/version
 ```
 > output
 ```
@@ -1498,10 +1499,10 @@ worker-2   Ready     <none>    1m        v1.10.2
 - In the `/etc/hosts` of each node make following entries.
 ```
 cat <<EOF | sudo tee /etc/hosts
-159.65.154.143 worker-1
-159.65.154.166 worker-2
-139.59.0.92   master-1 
-159.65.154.90 master-2 
+<worker-1-Public-IP> worker-1
+<worker-2-Public-IP> worker-2
+<master-1-Public-IP> master-1 
+<master-2-Public-IP> master-2 
 
 EOF
 ```
@@ -1526,7 +1527,7 @@ kubectl create clusterrolebinding admin  --clusterrole=cluster-admin  --user=adm
 ```
 
 {
-  KUBERNETES_PUBLIC_ADDRESS=174.138.122.121
+  KUBERNETES_PUBLIC_ADDRESS=<LoadBalancer-Public-IP>
 
   kubectl config set-cluster kubernetes-the-hard-way \
     --certificate-authority=ca.pem \
@@ -1535,7 +1536,7 @@ kubectl create clusterrolebinding admin  --clusterrole=cluster-admin  --user=adm
 
   kubectl config set-credentials admin \
     --client-certificate=admin.pem \
-    --client-key=admin-key.pem
+    --client-key=admin-key.pem \
     --embed-certs=true
 
   kubectl config set-context kubernetes-the-hard-way \
@@ -1587,8 +1588,8 @@ $ kubectl cluster-info
 ```
 > output
 ```
-Kubernetes master is running at https://142.93.212.159:6443
-KubeDNS is running at https://142.93.212.159:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+Kubernetes master is running at https://<Public IP>:6443
+KubeDNS is running at https://<Public IP>:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
@@ -1601,7 +1602,7 @@ In this section you will verify the ability to create and manage [Deployments](h
 - Create a deployment for the [nginx](https://nginx.org/en/) web server:
 
 ```
-$ kubectl run nginx --image=nginx
+$ kubectl run nginx --image=nginx:alpine
 ```
 
 - List the pod created by the `nginx` deployment:
