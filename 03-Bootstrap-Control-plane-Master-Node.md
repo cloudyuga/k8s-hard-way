@@ -427,3 +427,11 @@ $ curl --cacert /etc/etcd/ca.pem https://<LoadBalancer-Public-IP>:6443/version
   "compiler": "gc",
   "platform": "linux/amd64"
 ```
+
+- Create a ClusterRoleBinding for the remote cluster access.
+
+```
+{
+kubectl create clusterrolebinding admin  --clusterrole=cluster-admin  --user=admin --user=kubernetes --namespace=kube-system
+}
+```
