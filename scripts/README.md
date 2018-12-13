@@ -50,16 +50,16 @@ terraform version
 - We are asuming your public keys and private keys are located at `~/.ssh/id_rsa.pub` and `~/.ssh/id_rsa`
 
 
-## Create Kubernetes cluster on DigitalOcean.
+## Create Nodes for Kubernetes cluster on DigitalOcean.
 
 - Clone the Repository
 ``` 
-$ git clone https://github.com/nkhare/k8s-cicd-webinars.git
+$ git clone https://github.com/cloudyuga/k8s-hard-way.git
 ```
 
 - Go to the Terrafrom script directory.
 ```
-$ cd k8s-cicd-webinars/webinar1/2-kubernetes/1-Terraform/
+$ cd k8s-hard-way/script/
 ```
 
 - Get a Fingerprint of Your SSH public key.(This SSH key must be linked with DigitalOcean)
