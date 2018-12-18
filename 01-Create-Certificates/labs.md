@@ -8,10 +8,10 @@ Kubernetes by Hard way
 
 ```preventcopy
 Node        IP                          Private IP
-master-1  <master-1-Public-IP>         <master-1-Private-IP>
-Master-2  <master-2-Public-IP>         <master-2-Private-IP>
-worker-1  <worker-1-Public-IP>         <worker-1-Private-IP>
-worker-2  <worker-2-Public-IP>         <worker-2-Private-IP>
+master-1  <MASTER_1_PUBLIC_IP>         <MASTER_1_PRIVATE_IP>
+Master-2  <MASTER_2_PUBLIC_IP>         <MASTER_2_PRIVATE_IP>
+worker-1  <WORKER_1_PUBLIC_IP>         <WORKER_1_PRIVATE_IP>
+worker-2  <WORKER_2_PUBLIC_IP>         <WORKER_2_PRIVATE_IP>
 ```
 
 
@@ -19,47 +19,47 @@ worker-2  <worker-2-Public-IP>         <worker-2-Private-IP>
 - Export Load Balancer IP.
 
 ```command
-export LoadBalancer-Public-IP=
+export LOADBALANCER_IP=
 ```
 
 - Export Master1 PrivateIP and PublicIP
 
 ```command
-export master-1-Public-IP=
+export MASTER_1_PUBLIC_IP=
 ```
 
 ```command
-export master-1-Private-IP=
+export MASTER_1_PRIVATE_IP=
 ```
 
 - Export Master2 PrivateIP and PublicIP
 
 ```command
-export master-2-Public-IP=
+export MASTER_2_PUBLIC_IP=
 ```
 
 ```command
-export master-2-Private-IP
+export MASTER_2_PRIVATE_IP
 ```
 
 - Export Worker1 PrivateIP and PublicIP
 
 ```command
-export worker-1-Public-IP=
+export WORKER_1_PUBLIC_IP=
 ```
 
 ```command
-export worker-1-Private-IP=
+export WORKER_1_PRIVATE_IP=
 ```
 
 - Export Worker2 PrivateIP and PublicIP
 
 ```command
-export worker-2-Public-IP=
+export WORKER_2_PUBLIC_IP=
 ```
 
 ```command
-export worker-2-Private-IP=
+export WORKER_2_PRIVATE_IP=
 ```
 
 - Install `cfssl` on the machine [Workstation] from where you can access all these nodes. The cfssl and cfssljson command line utilities will be used to provision a PKI Infrastructure and generate TLS certificates.
@@ -204,7 +204,7 @@ cfssl gencert \
   -ca=ca.pem \
   -ca-key=ca-key.pem \
   -config=ca-config.json \
-  -hostname=worker-1,${worker-1-Public-IP},${worker-1-Private-IP} \
+  -hostname=worker-1,${WORKER_1_PUBLIC_IP},${WORKER_1_PRIVATE_IP} \
   -profile=kubernetes \
   worker-1-csr.json | cfssljson -bare worker-1 
 ```
@@ -236,7 +236,7 @@ cfssl gencert \
   -ca=ca.pem \
   -ca-key=ca-key.pem \
   -config=ca-config.json \
-  -hostname=worker-2,${worker-2-Public-IP},${worker-2-Private-IP} \
+  -hostname=worker-2,${WORKER_2_PUBLIC_IP},${WORKER_2_PRIVATE_IP} \
   -profile=kubernetes \
   worker-2-csr.json | cfssljson -bare worker-2
 
@@ -359,7 +359,7 @@ cfssl gencert \
 
 {
 
-KUBERNETES_PUBLIC_ADDRESS=${LoadBalancer-Public-IP}
+KUBERNETES_PUBLIC_ADDRESS=${LOADBALANCER_IP}
 
 
 cat > kubernetes-csr.json <<EOF
@@ -385,7 +385,7 @@ cfssl gencert \
   -ca=ca.pem \
   -ca-key=ca-key.pem \
   -config=ca-config.json \
-  -hostname=10.32.0.1,${master-1-Private-IP},${master-2-Private-IP},${master-1-Public-IP},${master-2-Public-IP},${KUBERNETES_PUBLIC_ADDRESS},127.0.0.1,kubernetes.default \
+  -hostname=10.32.0.1,${MASTER_1_PRIVATE_IP},${MASTER_2_PRIVATE_IP},${MASTER_1_PUBLIC_IP},${MASTER_2_PUBLIC_IP},${KUBERNETES_PUBLIC_ADDRESS},127.0.0.1,kubernetes.default \
   -profile=kubernetes \
   kubernetes-csr.json | cfssljson -bare kubernetes
 
@@ -438,14 +438,14 @@ cfssl gencert \
 
 ```command
 
- scp ca.pem worker-1-key.pem worker-1.pem root@${worker-1-Public-IP}:~/
+ scp ca.pem worker-1-key.pem worker-1.pem root@${WORKER_1_PUBLIC_IP}:~/
 
 ```
 
 - To worker2
 
 ```command
- scp ca.pem worker-2-key.pem worker-2.pem root@${worker-2-Public-IP}:~/
+ scp ca.pem worker-2-key.pem worker-2.pem root@${WORKER_2_PUBLIC_IP}:~/
 ```
 
 ## Generating Kubernetes Configuration Files for Authentication
@@ -464,7 +464,7 @@ When generating kubeconfig files for Kubelets the client certificate matching th
 
 ```command
 {
-KUBERNETES_PUBLIC_ADDRESS=${LoadBalancer-Public-IP}
+KUBERNETES_PUBLIC_ADDRESS=${LOADBALANCER_IP}
 
 for instance in worker-1 worker-2; do
   kubectl config set-cluster kubernetes-the-hard-way \
@@ -497,7 +497,7 @@ done
 
 ```command
 {
-  KUBERNETES_PUBLIC_ADDRESS=${LoadBalancer-Public-IP}
+  KUBERNETES_PUBLIC_ADDRESS=${LOADBALANCER_IP}
   
   
   kubectl config set-cluster kubernetes-the-hard-way \
@@ -611,13 +611,13 @@ Copy the appropriate `kubelet` and `kube-proxy` kubeconfig files to each worker 
 - worker-1
 
 ```command
- scp worker-1.kubeconfig kube-proxy.kubeconfig root@${worker-1-Public-IP}:~/
+ scp worker-1.kubeconfig kube-proxy.kubeconfig root@${WORKER_1_PUBLIC_IP}:~/
 ```
 
 - worker-2
 
 ```command
- scp worker-2.kubeconfig kube-proxy.kubeconfig root@${worker-2-Public-IP}:~/
+ scp worker-2.kubeconfig kube-proxy.kubeconfig root@${WORKER_2_PUBLIC_IP}:~/
 ```
 
 
@@ -661,11 +661,11 @@ EOF
 - For `master-1` node.
 
 ```command
-scp ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem service-account-key.pem service-account.pem admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig encryption-config.yaml root@${master-1-Public-IP}:~/.
+scp ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem service-account-key.pem service-account.pem admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig encryption-config.yaml root@${MASTER_1_PUBLIC_IP}:~/.
 ```
 
 - For `master-2` node.
 
 ```command
-scp ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem service-account-key.pem service-account.pem admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig encryption-config.yaml root@${master-2-Public-IP}:~/.
+scp ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem service-account-key.pem service-account.pem admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig encryption-config.yaml root@${MASTER_2_PUBLIC_IP}:~/.
 ```
