@@ -243,7 +243,7 @@ cfssl gencert \
   kube-controller-manager-csr.json | cfssljson -bare kube-controller-manager
 
 }
-```command
+```
 
 ### The Kube Proxy Client Certificate
 
@@ -279,7 +279,7 @@ cfssl gencert \
   kube-proxy-csr.json | cfssljson -bare kube-proxy
 
 }
-```command
+```
 
 ### The Scheduler Client Certificate
 
