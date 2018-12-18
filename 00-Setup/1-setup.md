@@ -7,9 +7,11 @@
 ## Tools
 
 ### Create SSH Keys.
-```
-$ ssh-keygen -t rsa
 
+```command
+ssh-keygen -t rsa
+```
+```
 Generating public/private rsa key pair.
 Enter file in which to save the key (~/.ssh/id_rsa): 
 Created directory '~/.ssh/'.
@@ -40,7 +42,7 @@ The key's randomart image is:
 
 - Download [Terraform binary](https://www.terraform.io/intro/getting-started/install.html) and add it to PATH.
 
-```
+```command
 apt install unzip
 wget https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
 unzip terraform_0.11.7_linux_amd64.zip
@@ -53,44 +55,50 @@ terraform version
 ## Create Nodes for Kubernetes cluster on DigitalOcean.
 
 - Clone the Repository
-``` 
-$ git clone https://github.com/cloudyuga/k8s-hard-way.git
+
+``` command
+git clone https://github.com/cloudyuga/k8s-hard-way.git
 ```
 
 - Go to the Terrafrom script directory.
-```
-$ cd k8s-hard-way/00-Setup/
+
+``` command
+cd k8s-hard-way/00-Setup/
 ```
 
 - Get a Fingerprint of Your SSH public key.(This SSH key must be linked with DigitalOcean)
+
+```command
+ssh-keygen -E md5 -lf ~/.ssh/id_rsa.pub | awk '{print $2}'
 ```
-$ ssh-keygen -E md5 -lf ~/.ssh/id_rsa.pub | awk '{print $2}'
+```
 MD5:dd:d1:b7:0f:6d:30:c0:be:ed:ae:c7:b9:b8:4a:df:5e
 ```
 
 - Export a Fingerprint shown in above output.
-```
-$ export FINGERPRINT=dd:d1:b7:0f:6d:30:c0:be:ed:ae:c7:b9:b8:4a:df:5e
+
+```command
+export FINGERPRINT=dd:d1:b7:0f:6d:30:c0:be:ed:ae:c7:b9:b8:4a:df:5e
 ```
 
 - Export your DO Personal Access Token.
-```
-$ export TOKEN=##########<Your Digital Ocean Personal Access Token>##########
+
+```command
+export TOKEN=##########<Your Digital Ocean Personal Access Token>##########
 ```
 
 - Now take a look at the directory.
+
+```command
+ls
 ```
-$ ls
+```
 cluster.tf  destroy.sh  outputs.tf  provider.tf  script.sh
 ```
-- Simply run the script.
-```
+
+- Run the script.
+
+```command
 ./script.sh
 ```
 
-
-### Delete Cluster.
-
-```
-$ ./destroy.sh
-```
