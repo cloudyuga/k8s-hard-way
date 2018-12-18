@@ -264,6 +264,8 @@ EOF
 
 > Remember to run the above commands on each worker node:  `worker-1`, and `worker-2`.
 
+
+
 ## Verification [Master Nodes]
 
 - Goto master node and get the list of the nodes.
@@ -278,14 +280,5 @@ worker-1   Ready     <none>    1m        v1.10.2
 worker-2   Ready     <none>    1m        v1.10.2
 ```
 
-- In the `/etc/hosts` of each node make following entries.
 
-```command
-cat <<EOF | sudo tee /etc/hosts
-<worker-1-Public-IP> worker-1
-<worker-2-Public-IP> worker-2
-<master-1-Public-IP> master-1 
-<master-2-Public-IP> master-2 
-EOF
-```
 
