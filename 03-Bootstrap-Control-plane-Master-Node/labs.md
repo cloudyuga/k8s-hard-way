@@ -6,17 +6,17 @@ In this lab you will bootstrap the Kubernetes control plane across three compute
 - Export Internal IP of Master1 and Master2 on both nodes.
 
 ```command
-export master-1-Private-IP=
+export MASTER_1_PUBLIC_IP=
 ```
 
 ```command
-export master-2-Private-IP=
+export MASTER_2_PUBLIC_IP=
 ```
 
 - Export Load Balancer IP.
 
 ```command
-export LoadBalancer-Public-IP=
+export LOADBALANCER_IP=
 ```
 
 
@@ -85,7 +85,7 @@ Documentation=https://github.com/kubernetes/kubernetes
 
 [Service]
 ExecStart=/usr/local/bin/kube-apiserver \\
-  --advertise-address=${master-1-Private-IP} \\
+  --advertise-address=${MASTER_1_PUBLIC_IP} \\
   --allow-privileged=true \\
   --apiserver-count=3 \\
   --audit-log-maxage=30 \\
@@ -100,7 +100,7 @@ ExecStart=/usr/local/bin/kube-apiserver \\
   --etcd-cafile=/var/lib/kubernetes/ca.pem \\
   --etcd-certfile=/var/lib/kubernetes/kubernetes.pem \\
   --etcd-keyfile=/var/lib/kubernetes/kubernetes-key.pem \\
-  --etcd-servers=https://${master-1-Private-IP}:2379,https://${master-2-Private-IP}:2379 \\
+  --etcd-servers=https://${MASTER_1_PUBLIC_IP}:2379,https://${MASTER_2_PUBLIC_IP}:2379 \\
   --event-ttl=1h \\
   --experimental-encryption-provider-config=/var/lib/kubernetes/encryption-config.yaml \\
   --kubelet-certificate-authority=/var/lib/kubernetes/ca.pem \\
@@ -134,7 +134,7 @@ Documentation=https://github.com/kubernetes/kubernetes
 
 [Service]
 ExecStart=/usr/local/bin/kube-apiserver \\
-  --advertise-address=${master-2-Private-IP} \\
+  --advertise-address=${MASTER_2_PUBLIC_IP} \\
   --allow-privileged=true \\
   --apiserver-count=3 \\
   --audit-log-maxage=30 \\
@@ -149,7 +149,7 @@ ExecStart=/usr/local/bin/kube-apiserver \\
   --etcd-cafile=/var/lib/kubernetes/ca.pem \\
   --etcd-certfile=/var/lib/kubernetes/kubernetes.pem \\
   --etcd-keyfile=/var/lib/kubernetes/kubernetes-key.pem \\
-  --etcd-servers=https://${master-1-Private-IP}:2379,https://${master-2-Private-IP}:2379 \\
+  --etcd-servers=https://${MASTER_1_PUBLIC_IP}:2379,https://${MASTER_2_PUBLIC_IP}:2379 \\
   --event-ttl=1h \\
   --experimental-encryption-provider-config=/var/lib/kubernetes/encryption-config.yaml \\
   --kubelet-certificate-authority=/var/lib/kubernetes/ca.pem \\
@@ -389,7 +389,7 @@ EOF
 - Make HTTPS request to get kubernetes version. We will use `master-2` Private IP.
 
 ```command
-curl --cacert /etc/etcd/ca.pem https://${master-2-Private-IP}:6443/version
+curl --cacert /etc/etcd/ca.pem https://${MASTER_2_PUBLIC_IP}:6443/version
 ```
 
 ```
@@ -409,7 +409,7 @@ curl --cacert /etc/etcd/ca.pem https://${master-2-Private-IP}:6443/version
 - Make HTTPS request to get kubernetes version. We will use `master-1` Private IP.
 
 ```command
-curl --cacert /etc/etcd/ca.pem https://${master-1-Private-IP}:6443/version
+curl --cacert /etc/etcd/ca.pem https://${MASTER_1_PUBLIC_IP}:6443/version
 ```
 ```
 {
@@ -429,7 +429,7 @@ curl --cacert /etc/etcd/ca.pem https://${master-1-Private-IP}:6443/version
 - In Digital Ocean configure your load balancer with TCP rule to forward traffic from 6443 to 6443 port. and verify that we can access the kubernetes control plane using Load Balancer.
 
 ```command
-curl --cacert /etc/etcd/ca.pem https://${LoadBalancer-Public-IP}:6443/version
+curl --cacert /etc/etcd/ca.pem https://${LOADBALANCER_IP}:6443/version
 ```
 ```
   "major": "1",

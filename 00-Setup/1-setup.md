@@ -56,17 +56,18 @@ terraform version
 
 
 - Get a Fingerprint of Your SSH public key.
+
 ```command
-ssh-keygen -E md5 -lf ~/.ssh/id_rsa.pub | awk '{print $2}'
+ssh-keygen -lf ~/.ssh/id_rsa.pub
 ```
 ```
-MD5:dd:d1:b7:0f:6d:30:c0:be:ed:ae:c7:b9:b8:4a:df:5e
+2048 00:11:22:33:44:55:66:77:88:99:aa:bb:cc:dd:ee:ff /Users/username/.ssh/id_rsa.pub (RSA)
 ```
 
 - Export a Fingerprint shown in above output.
 
 ```command
-export FINGERPRINT=dd:d1:b7:0f:6d:30:c0:be:ed:ae:c7:b9:b8:4a:df:5e
+export FINGERPRINT=00:11:22:33:44:55:66:77:88:99:aa:bb:cc:dd:ee:ff
 ```
 
 - Export your DO Personal Access Token.
@@ -81,7 +82,7 @@ export TOKEN=##########<Your Digital Ocean Personal Access Token>##########
 ls
 ```
 ```
-1-setup.md  2-cleanup.md  creation.sh  destroy.sh  key.tf  loadbalancer.tf  nodes.tf  outputs.tf  provider.tf
+1-setup.md   creation.sh  destroy.sh  key.tf  loadbalancer.tf  nodes.tf  outputs.tf  provider.tf
 
 ```
 
@@ -92,18 +93,6 @@ ls
 ```
 
 ### Delete Cluster.
-
-- Export a Fingerprint shown in above output.
-
-```command
-export FINGERPRINT=dd:d1:b7:0f:6d:30:c0:be:ed:ae:c7:b9:b8:4a:df:5e
-```
-
-- Export your DO Personal Access Token.
-
-```command
-export TOKEN=##########<Your Digital Ocean Personal Access Token>##########
-```
 
 
 ```command

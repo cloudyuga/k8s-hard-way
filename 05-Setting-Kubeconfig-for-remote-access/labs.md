@@ -5,7 +5,7 @@ Each kubeconfig requires a Kubernetes API Server to connect to. To support high 
 - Export Load Balancer IP.
 
 ```command
-export LoadBalancer-Public-IP=
+export LOADBALANCER_IP=
 ```
 
 - Set a context from a workstation where we have created certificates and keys.
@@ -13,7 +13,7 @@ export LoadBalancer-Public-IP=
 ```command
 
 {
-  KUBERNETES_PUBLIC_ADDRESS=${LoadBalancer-Public-IP}
+  KUBERNETES_PUBLIC_ADDRESS=${LOADBALANCER_IP}
 
   kubectl config set-cluster kubernetes-the-hard-way \
     --certificate-authority=ca.pem \
@@ -43,6 +43,7 @@ NAME                 STATUS    MESSAGE             ERROR
 controller-manager   Healthy   ok
 scheduler            Healthy   ok
 etcd-0               Healthy   {"health":"true"}
+etcd-1               Healthy   {"health":"true"}
 ```
 
 - List the nodes in the remote Kubernetes cluster:
