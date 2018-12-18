@@ -61,7 +61,7 @@ terraform version
 ssh-keygen -lf ~/.ssh/id_rsa.pub
 ```
 ```
-2048 00:11:22:33:44:55:66:77:88:99:aa:bb:cc:dd:ee:ff /Users/username/.ssh/id_rsa.pub (RSA)```
+2048 00:11:22:33:44:55:66:77:88:99:aa:bb:cc:dd:ee:ff /Users/username/.ssh/id_rsa.pub (RSA)
 ```
 
 - Export a Fingerprint shown in above output.
