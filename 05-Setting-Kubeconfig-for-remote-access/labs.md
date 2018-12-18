@@ -2,13 +2,18 @@
 
 Each kubeconfig requires a Kubernetes API Server to connect to. To support high availability the IP address assigned to the external load balancer fronting the Kubernetes API Servers will be used.
 
+- Export Load Balancer IP.
+
+```command
+export LoadBalancer-Public-IP=
+```
 
 - Set a context from a workstation where we have created certificates and keys.
 
 ```command
 
 {
-  KUBERNETES_PUBLIC_ADDRESS=<LoadBalancer-Public-IP>
+  KUBERNETES_PUBLIC_ADDRESS=${LoadBalancer-Public-IP}
 
   kubectl config set-cluster kubernetes-the-hard-way \
     --certificate-authority=ca.pem \

@@ -22,6 +22,17 @@ nginx-65899c769f-xkfcn   1/1       Running   0          15s
 
 In this section you will verify the ability to access applications remotely using [port forwarding](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/).
 
+- Make sure that, in the `/etc/hosts` of each node you have following entries.
+
+```command
+cat <<EOF | sudo tee /etc/hosts
+${worker-1-Public-IP} worker-1
+${worker-2-Public-IP} worker-2
+${master-1-Public-IP} master-1 
+${master-2-Public-IP} master-2 
+EOF
+```
+
 - Retrieve the full name of the `nginx` pod:
 
 ```command

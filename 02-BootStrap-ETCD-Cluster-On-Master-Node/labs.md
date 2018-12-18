@@ -31,13 +31,30 @@ wget -q --show-progress --https-only --timestamping \
 }
 ```
 
+- Export Internal IP of Master1 and Master2 on both nodes.
+
+```command
+export master-1-Private-IP=
+```
+
+```command
+export master-2-Private-IP=
+```
+
+- Export Load Balancer IP.
+
+```command
+export LoadBalancer-Public-IP=
+```
+
 - On `master-1` node, Create the `etcd.service` systemd file:
+
 
 ```command
 {
 
 ETCD_NAME=$(hostname -s)
-INTERNAL_IP=<master-1-Private-IP>
+
 
 cat <<EOF | sudo tee /etc/systemd/system/etcd.service
 [Unit]
@@ -55,12 +72,12 @@ ExecStart=/usr/local/bin/etcd \\
   --peer-trusted-ca-file=/etc/etcd/ca.pem \\
   --peer-client-cert-auth \\
   --client-cert-auth \\
-  --initial-advertise-peer-urls https://${INTERNAL_IP}:2380 \\
-  --listen-peer-urls https://${INTERNAL_IP}:2380 \\
-  --listen-client-urls https://${INTERNAL_IP}:2379,https://127.0.0.1:2379 \\
-  --advertise-client-urls https://${INTERNAL_IP}:2379 \\
+  --initial-advertise-peer-urls https://${master-1-Private-IP}:2380 \\
+  --listen-peer-urls https://${master-1-Private-IP}:2380 \\
+  --listen-client-urls https://${master-1-Private-IP}:2379,https://127.0.0.1:2379 \\
+  --advertise-client-urls https://${master-1-Private-IP}:2379 \\
   --initial-cluster-token etcd-cluster-0 \\
-  --initial-cluster master-1=https://<master-1-Private-IP>:2380,master-2=https://<master-2-Private-IP>:2380 \\
+  --initial-cluster master-1=https://${master-1-Private-IP}:2380,master-2=https://${master-2-Private-IP}:2380 \\
   --initial-cluster-state new \\
   --data-dir=/var/lib/etcd
 Restart=on-failure
@@ -75,6 +92,9 @@ EOF
 
 
 - On `master-2` node, Create the `etcd.service` systemd file:
+
+
+- Create the `etcd.service` systemd file:
 
 ```command
 {
@@ -97,12 +117,12 @@ ExecStart=/usr/local/bin/etcd \\
   --peer-trusted-ca-file=/etc/etcd/ca.pem \\
   --peer-client-cert-auth \\
   --client-cert-auth \\
-  --initial-advertise-peer-urls https://${INTERNAL_IP}:2380 \\
-  --listen-peer-urls https://${INTERNAL_IP}:2380 \\
-  --listen-client-urls https://${INTERNAL_IP}:2379,https://127.0.0.1:2379 \\
-  --advertise-client-urls https://${INTERNAL_IP}:2379 \\
+  --initial-advertise-peer-urls https://${master-2-Private-IP}:2380 \\
+  --listen-peer-urls https://${master-2-Private-IP}:2380 \\
+  --listen-client-urls https://${master-2-Private-IP}:2379,https://127.0.0.1:2379 \\
+  --advertise-client-urls https://${master-2-Private-IP}:2379 \\
   --initial-cluster-token etcd-cluster-0 \\
-  --initial-cluster master-1=https://<master-1-Private-IP>:2380,master-2=https://<master-2-Private-IP>:2380 \\
+  --initial-cluster master-1=https://${master-1-Private-IP}:2380,master-2=https://${master-2-Private-IP}:2380 \\
   --initial-cluster-state new \\
   --data-dir=/var/lib/etcd
 Restart=on-failure
@@ -141,6 +161,6 @@ sudo ETCDCTL_API=3 etcdctl member list \
 > output
 ```
 102a13d1003e5d5a, started, master-2, https://10.135.86.233:2380, https://10.135.86.233:2379
-f5ca186f2ed6cf38, started, master-1, https://<master-1-Private-IP>:2380, https://<master-1-Private-IP>:2379
+f5ca186f2ed6cf38, started, master-1, https://10.135.86.233:2380, https://10.135.86.233:2379
 
 ```
