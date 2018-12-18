@@ -10,7 +10,7 @@ Kubernetes The Hard Way guides you through bootstrapping a highly available Kube
 * [containerd Container Runtime](https://github.com/containerd/containerd) v1.1.0
 * [CNI Container Networking](https://github.com/containernetworking/cni) 0.7.1
 * [etcd](https://github.com/coreos/etcd) v3.3.5
-* [KubeDNS](https://github.com/kubernetes/dns) v1.10.2
+* [KubeDNS](https://github.com/kubernetes/dns) 
 
 
 
