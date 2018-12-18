@@ -8,14 +8,14 @@ Kubernetes components are stateless and store cluster state in [etcd](https://gi
 - Do SSH login to `master-1` and `master-2` node. 
 - Download the official etcd release binaries from the [coreos/etcd](https://github.com/coreos/etcd) GitHub project:
 
-```
+```command
 wget -q --show-progress --https-only --timestamping \
   "https://github.com/coreos/etcd/releases/download/v3.3.5/etcd-v3.3.5-linux-amd64.tar.gz"
 ```
 
 - Extract and install the `etcd` server and the `etcdctl` command line utility:
 
-```
+```command
 {
   tar -xvf etcd-v3.3.5-linux-amd64.tar.gz
   sudo mv etcd-v3.3.5-linux-amd64/etcd* /usr/local/bin/
@@ -24,7 +24,7 @@ wget -q --show-progress --https-only --timestamping \
 
 ### Configure the etcd Server on both `master-1` and `master-2` 
 
-```
+```command
 {
   sudo mkdir -p /etc/etcd /var/lib/etcd
   sudo cp ca.pem kubernetes-key.pem kubernetes.pem /etc/etcd/
@@ -33,7 +33,7 @@ wget -q --show-progress --https-only --timestamping \
 
 - On `master-1` node, Create the `etcd.service` systemd file:
 
-```
+```command
 {
 
 ETCD_NAME=$(hostname -s)
@@ -76,7 +76,7 @@ EOF
 
 - On `master-2` node, Create the `etcd.service` systemd file:
 
-```
+```command
 {
 ETCD_NAME=$(hostname -s)
 INTERNAL_IP=<master-2-Private-IP>
@@ -118,7 +118,7 @@ EOF
 
 ### Start the ETCD Services on both `master-1` and `master-2` .
 
-```
+```command
 {
 sudo systemctl daemon-reload
 sudo systemctl enable etcd
@@ -131,7 +131,7 @@ sudo systemctl start etcd
 
 - List the etcd cluster members:
 
-```
+```command
 sudo ETCDCTL_API=3 etcdctl member list \
   --endpoints=https://127.0.0.1:2379 \
   --cacert=/etc/etcd/ca.pem \

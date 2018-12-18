@@ -2,6 +2,7 @@ resource "digitalocean_droplet" "master-1" {
     name = "master-1"
     image = "ubuntu-16-04-x64"
     size = "${var.size}"
+    tags = ["${var.tag}"]
     region = "${var.region}"
     ipv6 = true
     private_networking = true
@@ -15,6 +16,7 @@ resource "digitalocean_droplet" "master-2" {
     name = "master-2"
     image = "ubuntu-16-04-x64"
     size = "${var.size}"
+    tags = ["${var.tag}"]
     region = "${var.region}"
     ipv6 = true
     private_networking = true
@@ -29,6 +31,7 @@ resource "digitalocean_droplet" "worker-1" {
     name = "worker-1"
     image = "ubuntu-16-04-x64"
     size = "${var.size}"
+    tags = ["${var.tag}"]
     region = "${var.region}"
     ipv6 = true
     private_networking = true
@@ -41,6 +44,7 @@ resource "digitalocean_droplet" "worker-2" {
     name = "worker-2"
     image = "ubuntu-16-04-x64"
     size = "${var.size}"
+    tags = ["${var.tag}"]
     region = "${var.region}"
     ipv6 = true
     private_networking = true
@@ -49,3 +53,4 @@ resource "digitalocean_droplet" "worker-2" {
     ]
    
 }
+

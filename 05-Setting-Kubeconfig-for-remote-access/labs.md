@@ -5,7 +5,7 @@ Each kubeconfig requires a Kubernetes API Server to connect to. To support high 
 
 - Set a context from a workstation where we have created certificates and keys.
 
-```
+```command
 
 {
   KUBERNETES_PUBLIC_ADDRESS=<LoadBalancer-Public-IP>
@@ -30,10 +30,9 @@ Each kubeconfig requires a Kubernetes API Server to connect to. To support high 
 
 - Check the health of the remote Kubernetes cluster:
 
+```command
+kubectl get componentstatuses
 ```
-$ kubectl get componentstatuses
-```
-> output
 ```
 NAME                 STATUS    MESSAGE             ERROR
 controller-manager   Healthy   ok
@@ -43,10 +42,9 @@ etcd-0               Healthy   {"health":"true"}
 
 - List the nodes in the remote Kubernetes cluster:
 
+```command
+kubectl get nodes
 ```
-$ kubectl get nodes
-```
-> output
 ```
 NAME       STATUS    ROLES     AGE       VERSION
 worker-1   Ready     <none>    1m        v1.10.2
@@ -57,17 +55,16 @@ worker-2   Ready     <none>    1m        v1.10.2
 
 ## Apply the DNS. [On Master node]
 
-```
-$ kubectl create -f https://raw.githubusercontent.com/kelseyhightower/kubernetes-the-hard-way/master/deployments/kube-dns.yaml
+```command
+kubectl create -f https://raw.githubusercontent.com/kelseyhightower/kubernetes-the-hard-way/master/deployments/kube-dns.yaml
 ```
 
 
 - Cluster info.
 
+```command
+kubectl cluster-info
 ```
-$ kubectl cluster-info
-```
-> output
 ```
 Kubernetes master is running at https://<Public IP>:6443
 KubeDNS is running at https://<Public IP>:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy

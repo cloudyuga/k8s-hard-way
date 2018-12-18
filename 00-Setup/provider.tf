@@ -5,7 +5,7 @@ variable "pvt_key" {}
 variable "ssh_fingerprint" {}
 variable "region" {}
 variable "size" {}
-
+variable "tag" {}
 provider "digitalocean" {
   token = "${var.do_token}"
 }

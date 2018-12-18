@@ -6,7 +6,7 @@ Kubernetes by Hard way
 
 - List of the  Nodes.
 
-```
+```preventcopy
 Node        IP                          Private IP
 master-1  <master-1-Public-IP>         <master-1-Private-IP>
 Master-2  <master-2-Public-IP>         <master-2-Private-IP>
@@ -15,7 +15,8 @@ worker-2  <worker-2-Public-IP>         <worker-2-Private-IP>
 ```
 
 - A load balancer.
-```
+
+```preventcopy
 KUBERNETES_PUBLIC_ADDRESS = <LoadBalancer-Public-IP>
 ```
 
@@ -23,7 +24,7 @@ KUBERNETES_PUBLIC_ADDRESS = <LoadBalancer-Public-IP>
 
 - Install `cfssl` on the machine [Workstation] from where you can access all these nodes. The cfssl and cfssljson command line utilities will be used to provision a PKI Infrastructure and generate TLS certificates.
 
-```
+```command
 wget -q --show-progress --https-only --timestamping \
   https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 \
   https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
@@ -34,7 +35,7 @@ sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 
 - Install `kubectl`.
 
-```
+```command
 apt-get update && apt-get install -y apt-transport-https
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
@@ -46,7 +47,8 @@ apt-get install -y kubectl
 
 ## Certificates and Keys.
 ### CA
-```
+
+```command
 {
 
 cat > ca-config.json <<EOF
@@ -97,7 +99,7 @@ In this section you will generate client and server certificates for each Kubern
 
 - Generate the `admin` client certificate and private key:
 
-```
+```command
 {
 
 cat > admin-csr.json <<EOF
@@ -137,7 +139,7 @@ Kubernetes uses a [special-purpose authorization mode](https://kubernetes.io/doc
 
 ### Generate a certificate and private key for Kubernetes worker-1
 
-```
+```command
 cat > worker-1-csr.json <<EOF
 {
   "CN": "system:node:worker-1",
@@ -172,7 +174,7 @@ cfssl gencert \
 
 ### Generate a certificate and private key for Kubernetes worker-2
 
-```
+```command
 cat > worker-2-csr.json <<EOF
 {
   "CN": "system:node:worker-2",
@@ -211,7 +213,7 @@ cfssl gencert \
 
 - Generate the `kube-controller-manager` client certificate and private key:
 
-```
+```command
 {
 
 cat > kube-controller-manager-csr.json <<EOF
@@ -247,7 +249,7 @@ cfssl gencert \
 
 - Generate the `kube-proxy` client certificate and private key:
 
-```
+```command
 {
 
 cat > kube-proxy-csr.json <<EOF
@@ -283,7 +285,7 @@ cfssl gencert \
 
 - Generate the `kube-scheduler` client certificate and private key:
 
-```
+```command
 {
 
 cat > kube-scheduler-csr.json <<EOF
@@ -320,7 +322,7 @@ cfssl gencert \
 
 - Generate the Kubernetes API Server certificate and private key:
 
-```
+```command
 MASTER_1_PRIVATE_IP=<master-1-Private-IP>
 MASTER_2_PRIVATE_IP=<master-2-Private-IP>
 MASTER_1_PUBLIC_IP=<master-1-Public-IP>
@@ -367,7 +369,7 @@ The Kubernetes Controller Manager leverages a key pair to generate and sign serv
 
 - Generate the `service-account` certificate and private key:
 
-```
+```command
 {
 
 cat > service-account-csr.json <<EOF
@@ -404,14 +406,16 @@ cfssl gencert \
 - Copy the appropriate certificates and private keys to each worker instance:
 
 - To worker1
-```
+
+```command
 
  scp ca.pem worker-1-key.pem worker-1.pem root@<worker-1-Public-IP>:~/
 
 ```
 
 - To worker2
-```
+
+```command
  scp ca.pem worker-2-key.pem worker-2.pem root@<worker-2-Public-IP>:~/
 ```
 
@@ -429,7 +433,7 @@ When generating kubeconfig files for Kubelets the client certificate matching th
 
 - Generate a kubeconfig file for each worker node:
 
-```
+```command
 {
 KUBERNETES_PUBLIC_ADDRESS=<LoadBalancer-Public-IP>
 
@@ -462,7 +466,7 @@ done
 
 - Generate a kubeconfig file for the `kube-proxy` service:
 
-```
+```command
 {
   KUBERNETES_PUBLIC_ADDRESS=<LoadBalancer-Public-IP>
   
@@ -493,7 +497,7 @@ done
 
 - Generate a kubeconfig file for the `kube-controller-manager` service:
 
-```
+```command
 {
   kubectl config set-cluster kubernetes-the-hard-way \
     --certificate-authority=ca.pem \
@@ -520,7 +524,7 @@ done
 
 - Generate a kubeconfig file for the `kube-scheduler` service:
 
-```
+```command
 {
   kubectl config set-cluster kubernetes-the-hard-way \
     --certificate-authority=ca.pem \
@@ -548,7 +552,7 @@ done
 
 - Generate a kubeconfig file for the `admin` user:
 
-```
+```command
 {
   kubectl config set-cluster kubernetes-the-hard-way \
     --certificate-authority=ca.pem \
@@ -576,12 +580,14 @@ done
 Copy the appropriate `kubelet` and `kube-proxy` kubeconfig files to each worker instance:
 
 - worker-1
-```
+
+```command
  scp worker-1.kubeconfig kube-proxy.kubeconfig root@<worker-1-Public-IP>:~/
 ```
 
 - worker-2
-```
+
+```command
  scp worker-2.kubeconfig kube-proxy.kubeconfig root@<worker-2-Public-IP>:~/
 ```
 
@@ -596,7 +602,7 @@ In this lab you will generate an encryption key and an [encryption config](https
 
 - Generate an encryption key:
 
-```
+```command
 ENCRYPTION_KEY=$(head -c 32 /dev/urandom | base64)
 ```
 
@@ -604,7 +610,7 @@ ENCRYPTION_KEY=$(head -c 32 /dev/urandom | base64)
 
 - Create the `encryption-config.yaml` encryption config file:
 
-```
+```command
 ENCRYPTION_KEY=$(head -c 32 /dev/urandom | base64)
 cat > encryption-config.yaml <<EOF
 kind: EncryptionConfig
@@ -625,12 +631,12 @@ EOF
 
 - For `master-1` node.
 
-```
+```command
 scp ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem service-account-key.pem service-account.pem admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig encryption-config.yaml root@<master-1-Public-IP>:~/.
 ```
 
 - For `master-2` node.
 
-```
+```command
 scp ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem service-account-key.pem service-account.pem admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig encryption-config.yaml root@<master-2-Public-IP>:~/.
 ```
