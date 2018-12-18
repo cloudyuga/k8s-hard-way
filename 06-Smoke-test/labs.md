@@ -26,10 +26,10 @@ In this section you will verify the ability to access applications remotely usin
 
 ```command
 cat <<EOF | sudo tee /etc/hosts
-${worker-1-Public-IP} worker-1
-${worker-2-Public-IP} worker-2
-${master-1-Public-IP} master-1 
-${master-2-Public-IP} master-2 
+${WORKER_1_PUBLIC_IP} worker-1
+${WORKER_2_PUBLIC_IP} worker-2
+${MASTER_1_PUBLIC_IP} master-1 
+${MASTER_2_PUBLIC_IP} master-2 
 EOF
 ```
 
