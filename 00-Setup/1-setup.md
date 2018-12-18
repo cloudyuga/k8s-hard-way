@@ -54,20 +54,8 @@ terraform version
 
 ## Create Nodes for Kubernetes cluster on DigitalOcean.
 
-- Clone the Repository
 
-``` command
-git clone https://github.com/cloudyuga/k8s-hard-way.git
-```
-
-- Go to the Terrafrom script directory.
-
-``` command
-cd k8s-hard-way/00-Setup/
-```
-
-- Get a Fingerprint of Your SSH public key.(This SSH key must be linked with DigitalOcean)
-
+- Get a Fingerprint of Your SSH public key.
 ```command
 ssh-keygen -E md5 -lf ~/.ssh/id_rsa.pub | awk '{print $2}'
 ```
@@ -93,12 +81,31 @@ export TOKEN=##########<Your Digital Ocean Personal Access Token>##########
 ls
 ```
 ```
-cluster.tf  destroy.sh  outputs.tf  provider.tf  script.sh
+1-setup.md  2-cleanup.md  creation.sh  destroy.sh  key.tf  loadbalancer.tf  nodes.tf  outputs.tf  provider.tf
+
 ```
 
 - Run the script.
 
 ```command
-./script.sh
+./creation.sh
 ```
 
+### Delete Cluster.
+
+- Export a Fingerprint shown in above output.
+
+```command
+export FINGERPRINT=dd:d1:b7:0f:6d:30:c0:be:ed:ae:c7:b9:b8:4a:df:5e
+```
+
+- Export your DO Personal Access Token.
+
+```command
+export TOKEN=##########<Your Digital Ocean Personal Access Token>##########
+```
+
+
+```command
+./destroy.sh
+```
