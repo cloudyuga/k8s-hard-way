@@ -59,7 +59,7 @@ $ git clone https://github.com/cloudyuga/k8s-hard-way.git
 
 - Go to the Terrafrom script directory.
 ```
-$ cd k8s-hard-way/script/
+$ cd k8s-hard-way/00-Setup/
 ```
 
 - Get a Fingerprint of Your SSH public key.(This SSH key must be linked with DigitalOcean)
