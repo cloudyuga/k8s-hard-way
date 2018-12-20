@@ -12,7 +12,6 @@ kubectl run nginx --image=nginx:alpine
 ```command
 kubectl get pods -l run=nginx
 ```
-output
 ```
 NAME                     READY     STATUS    RESTARTS   AGE
 nginx-65899c769f-xkfcn   1/1       Running   0          15s
@@ -51,7 +50,6 @@ kubectl port-forward $POD_NAME 8088:80
 ```command
 curl --head 127.0.0.1:8088
 ```
-> output
 ```
 Handling connection for 8088
 HTTP/1.1 200 OK
