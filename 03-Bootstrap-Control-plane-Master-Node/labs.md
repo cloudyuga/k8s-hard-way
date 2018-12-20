@@ -6,11 +6,11 @@ In this lab you will bootstrap the Kubernetes control plane across three compute
 - Export Internal IP of Master1 and Master2 on both nodes.
 
 ```command
-export MASTER_1_PUBLIC_IP=
+export MASTER_1_PRIVATE_IP=
 ```
 
 ```command
-export MASTER_2_PUBLIC_IP=
+export MASTER_2_PRIVATE_IP=
 ```
 
 - Export Load Balancer IP.
@@ -34,9 +34,9 @@ sudo mkdir -p /etc/kubernetes/config
 
 ```command
 wget -q --show-progress --https-only --timestamping \
-  "https://storage.googleapis.com/kubernetes-release/release/v1.10.2/bin/linux/amd64/kube-apiserver" \
-  "https://storage.googleapis.com/kubernetes-release/release/v1.10.2/bin/linux/amd64/kube-controller-manager" \
-  "https://storage.googleapis.com/kubernetes-release/release/v1.10.2/bin/linux/amd64/kube-scheduler" 
+  "https://storage.googleapis.com/kubernetes-release/release/v1.10.6/bin/linux/amd64/kube-apiserver" \
+  "https://storage.googleapis.com/kubernetes-release/release/v1.10.6/bin/linux/amd64/kube-controller-manager" \
+  "https://storage.googleapis.com/kubernetes-release/release/v1.10.6/bin/linux/amd64/kube-scheduler" 
 ```
 
 - Install the Kubernetes binaries:
@@ -85,7 +85,7 @@ Documentation=https://github.com/kubernetes/kubernetes
 
 [Service]
 ExecStart=/usr/local/bin/kube-apiserver \\
-  --advertise-address=${MASTER_1_PUBLIC_IP} \\
+  --advertise-address=${MASTER_1_PRIVATE_IP} \\
   --allow-privileged=true \\
   --apiserver-count=3 \\
   --audit-log-maxage=30 \\
@@ -100,7 +100,7 @@ ExecStart=/usr/local/bin/kube-apiserver \\
   --etcd-cafile=/var/lib/kubernetes/ca.pem \\
   --etcd-certfile=/var/lib/kubernetes/kubernetes.pem \\
   --etcd-keyfile=/var/lib/kubernetes/kubernetes-key.pem \\
-  --etcd-servers=https://${MASTER_1_PUBLIC_IP}:2379,https://${MASTER_2_PUBLIC_IP}:2379 \\
+  --etcd-servers=https://${MASTER_1_PRIVATE_IP}:2379,https://${MASTER_2_PRIVATE_IP}:2379 \\
   --event-ttl=1h \\
   --experimental-encryption-provider-config=/var/lib/kubernetes/encryption-config.yaml \\
   --kubelet-certificate-authority=/var/lib/kubernetes/ca.pem \\
@@ -134,7 +134,7 @@ Documentation=https://github.com/kubernetes/kubernetes
 
 [Service]
 ExecStart=/usr/local/bin/kube-apiserver \\
-  --advertise-address=${MASTER_2_PUBLIC_IP} \\
+  --advertise-address=${MASTER_2_PRIVATE_IP} \\
   --allow-privileged=true \\
   --apiserver-count=3 \\
   --audit-log-maxage=30 \\
@@ -149,7 +149,7 @@ ExecStart=/usr/local/bin/kube-apiserver \\
   --etcd-cafile=/var/lib/kubernetes/ca.pem \\
   --etcd-certfile=/var/lib/kubernetes/kubernetes.pem \\
   --etcd-keyfile=/var/lib/kubernetes/kubernetes-key.pem \\
-  --etcd-servers=https://${MASTER_1_PUBLIC_IP}:2379,https://${MASTER_2_PUBLIC_IP}:2379 \\
+  --etcd-servers=https://${MASTER_1_PRIVATE_IP}:2379,https://${MASTER_2_PRIVATE_IP}:2379 \\
   --event-ttl=1h \\
   --experimental-encryption-provider-config=/var/lib/kubernetes/encryption-config.yaml \\
   --kubelet-certificate-authority=/var/lib/kubernetes/ca.pem \\
@@ -272,7 +272,7 @@ sudo apt-get update
 sudo apt-get install -y nginx
 ```
 
-```
+```command
 cat > kubernetes.default.svc.cluster.local <<EOF
 server {
   listen      80;
@@ -389,7 +389,7 @@ EOF
 - Make HTTPS request to get kubernetes version. We will use `master-2` Private IP.
 
 ```command
-curl --cacert /etc/etcd/ca.pem https://${MASTER_2_PUBLIC_IP}:6443/version
+curl --cacert /etc/etcd/ca.pem https://${MASTER_2_PRIVATE_IP}:6443/version
 ```
 
 ```
@@ -409,7 +409,7 @@ curl --cacert /etc/etcd/ca.pem https://${MASTER_2_PUBLIC_IP}:6443/version
 - Make HTTPS request to get kubernetes version. We will use `master-1` Private IP.
 
 ```command
-curl --cacert /etc/etcd/ca.pem https://${MASTER_1_PUBLIC_IP}:6443/version
+curl --cacert /etc/etcd/ca.pem https://${MASTER_1_PRIVATE_IP}:6443/version
 ```
 ```
 {

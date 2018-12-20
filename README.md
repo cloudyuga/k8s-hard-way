@@ -6,7 +6,7 @@
 
 Kubernetes The Hard Way guides you through bootstrapping a highly available Kubernetes cluster with end-to-end encryption between components and RBAC authentication. The kubernetes cluster will be created with following specifications:
 
-* [Kubernetes](https://github.com/kubernetes/kubernetes) v1.10.2
+* [Kubernetes](https://github.com/kubernetes/kubernetes) v1.10.6
 * [containerd Container Runtime](https://github.com/containerd/containerd) v1.1.0
 * [CNI Container Networking](https://github.com/containernetworking/cni) 0.7.1
 * [etcd](https://github.com/coreos/etcd) v3.3.5

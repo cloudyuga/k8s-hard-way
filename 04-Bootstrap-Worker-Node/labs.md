@@ -26,9 +26,9 @@ wget -q --show-progress --https-only --timestamping \
   https://github.com/opencontainers/runc/releases/download/v1.0.0-rc5/runc.amd64 \
    https://github.com/containernetworking/plugins/releases/download/v0.7.1/cni-plugins-amd64-v0.7.1.tgz \
   https://github.com/containerd/containerd/releases/download/v1.1.0/containerd-1.1.0.linux-amd64.tar.gz \
-  https://storage.googleapis.com/kubernetes-release/release/v1.10.2/bin/linux/amd64/kubectl \
-  https://storage.googleapis.com/kubernetes-release/release/v1.10.2/bin/linux/amd64/kube-proxy \
-  https://storage.googleapis.com/kubernetes-release/release/v1.10.2/bin/linux/amd64/kubelet 
+  https://storage.googleapis.com/kubernetes-release/release/v1.10.6/bin/linux/amd64/kubectl \
+  https://storage.googleapis.com/kubernetes-release/release/v1.10.6/bin/linux/amd64/kube-proxy \
+  https://storage.googleapis.com/kubernetes-release/release/v1.10.6/bin/linux/amd64/kubelet 
 
 ```
 
@@ -102,7 +102,7 @@ EOF
 sudo mkdir -p /etc/containerd/
 ```
 
-```
+```command
 cat << EOF | sudo tee /etc/containerd/config.toml
 [plugins]
   [plugins.cri.containerd]
@@ -273,11 +273,10 @@ EOF
 ```command
 kubectl get nodes
 ```
-> output
 ```
-NAME       STATUS    ROLES     AGE       VERSION
-worker-1   Ready     <none>    1m        v1.10.2
-worker-2   Ready     <none>    1m        v1.10.2
+NAME       STATUS   ROLES    AGE   VERSION
+worker-1   Ready    <none>   41s   v1.10.6
+worker-2   Ready    <none>   26s   v1.10.6
 ```
 
 

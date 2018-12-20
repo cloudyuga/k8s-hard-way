@@ -52,9 +52,9 @@ etcd-1               Healthy   {"health":"true"}
 kubectl get nodes
 ```
 ```
-NAME       STATUS    ROLES     AGE       VERSION
-worker-1   Ready     <none>    1m        v1.10.2
-worker-2   Ready     <none>    1m        v1.10.2
+NAME       STATUS   ROLES    AGE   VERSION
+worker-1   Ready    <none>   4m    v1.10.6
+worker-2   Ready    <none>   3m    v1.10.6
 ```
 
 
