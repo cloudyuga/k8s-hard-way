@@ -102,7 +102,7 @@ EOF
 sudo mkdir -p /etc/containerd/
 ```
 
-```
+```command
 cat << EOF | sudo tee /etc/containerd/config.toml
 [plugins]
   [plugins.cri.containerd]
