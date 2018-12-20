@@ -272,7 +272,7 @@ sudo apt-get update
 sudo apt-get install -y nginx
 ```
 
-```
+```command
 cat > kubernetes.default.svc.cluster.local <<EOF
 server {
   listen      80;
