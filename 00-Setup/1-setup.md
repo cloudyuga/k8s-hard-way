@@ -12,6 +12,18 @@
 apt install sudo
 ```
 
+### Install Terraform
+
+- Download [Terraform binary](https://www.terraform.io/intro/getting-started/install.html) and add it to PATH.
+
+```command
+sudo apt install unzip
+wget https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
+unzip terraform_0.11.7_linux_amd64.zip
+sudo mv terraform /usr/bin/.
+terraform version
+```
+
 - Once you done with installation you will login with username by
 
 ```command
@@ -50,17 +62,6 @@ The key's randomart image is:
 
 - You must link above created SSH key to [DigitalOcean] For that follow these [guidelines](https://www.digitalocean.com/docs/droplets/how-to/add-ssh-keys/create-with-openssh/)
 
-### Install Terraform
-
-- Download [Terraform binary](https://www.terraform.io/intro/getting-started/install.html) and add it to PATH.
-
-```command
-sudo apt install unzip
-wget https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
-unzip terraform_0.11.7_linux_amd64.zip
-sudo mv terraform /usr/bin/.
-terraform version
-```
 - We are asuming your public keys and private keys are located at `~/.ssh/id_rsa.pub` and `~/.ssh/id_rsa`
 
 
