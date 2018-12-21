@@ -39,7 +39,7 @@ export MASTER_2_PUBLIC_IP=
 ```
 
 ```command
-export MASTER_2_PRIVATE_IP
+export MASTER_2_PRIVATE_IP=
 ```
 
 - Export Worker1 PrivateIP and PublicIP
@@ -62,15 +62,15 @@ export WORKER_2_PUBLIC_IP=
 export WORKER_2_PRIVATE_IP=
 ```
 
-- Install `cfssl` on the machine [Workstation] from where you can access all these nodes. The cfssl and cfssljson command line utilities will be used to provision a PKI Infrastructure and generate TLS certificates.
+- Install `cfssl` on the machine [Workstation] from where you can access all these nodes. The cfssl and cfssljson command line utilities will be INed to provision a PKI Infrastructure and generate TLS certificates.
 
 ```command
 wget -q --show-progress --https-only --timestamping \
   https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 \
   https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
 chmod +x cfssl_linux-amd64 cfssljson_linux-amd64
-sudo mv cfssl_linux-amd64 /usr/local/bin/cfssl
-sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
+sudo mv cfssl_linux-amd64 /INr/local/bin/cfssl
+sudo mv cfssljson_linux-amd64 /INr/local/bin/cfssljson
 ```
 
 - Install `kubectl`.
@@ -99,7 +99,7 @@ cat > ca-config.json <<EOF
     },
     "profiles": {
       "kubernetes": {
-        "usages": ["signing", "key encipherment", "server auth", "client auth"],
+        "INages": ["signing", "key encipherment", "server auth", "client auth"],
         "expiry": "8760h"
       }
     }
@@ -116,11 +116,11 @@ cat > ca-csr.json <<EOF
   },
   "names": [
     {
-      "C": "US",
+      "C": "IN",
       "L": "Portland",
       "O": "Kubernetes",
       "OU": "CA",
-      "ST": "Oregon"
+      "ST": "Karnataka"
     }
   ]
 }
@@ -133,7 +133,7 @@ cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 
 ### Client and Server Certificates
 
-In this section you will generate client and server certificates for each Kubernetes component and a client certificate for the Kubernetes `admin` user.
+In this section you will generate client and server certificates for each Kubernetes component and a client certificate for the Kubernetes `admin` INer.
 
 #### The Admin Client Certificate
 
@@ -151,11 +151,11 @@ cat > admin-csr.json <<EOF
   },
   "names": [
     {
-      "C": "US",
+      "C": "IN",
       "L": "Portland",
       "O": "system:master-0s",
       "OU": "Kubernetes The Hard Way",
-      "ST": "Oregon"
+      "ST": "Karnataka"
     }
   ]
 }
@@ -173,7 +173,7 @@ cfssl gencert \
 
 ### The Kubelet Client Certificates
 
-Kubernetes uses a [special-purpose authorization mode](https://kubernetes.io/docs/admin/authorization/node/) called Node Authorizer, that specifically authorizes API requests made by [Kubelets](https://kubernetes.io/docs/concepts/overview/components/#kubelet). In order to be authorized by the Node Authorizer, Kubelets must use a credential that identifies them as being in the `system:nodes` group, with a username of `system:node:<nodeName>`. In this section you will create a certificate for each Kubernetes worker node that meets the Node Authorizer requirements.
+Kubernetes INes a [special-purpose authorization mode](https://kubernetes.io/docs/admin/authorization/node/) called Node Authorizer, that specifically authorizes API requests made by [Kubelets](https://kubernetes.io/docs/concepts/overview/components/#kubelet). In order to be authorized by the Node Authorizer, Kubelets mINt INe a credential that identifies them as being in the `system:nodes` group, with a INername of `system:node:<nodeName>`. In this section you will create a certificate for each Kubernetes worker node that meets the Node Authorizer requirements.
 
 - Generate a certificate and private key for each Kubernetes worker node:
 
@@ -189,11 +189,11 @@ cat > worker-1-csr.json <<EOF
   },
   "names": [
     {
-      "C": "US",
+      "C": "IN",
       "L": "Portland",
       "O": "system:nodes",
       "OU": "Kubernetes The Hard Way",
-      "ST": "Oregon"
+      "ST": "Karnataka"
     }
   ]
 }
@@ -221,11 +221,11 @@ cat > worker-2-csr.json <<EOF
   },
   "names": [
     {
-      "C": "US",
+      "C": "IN",
       "L": "Portland",
       "O": "system:nodes",
       "OU": "Kubernetes The Hard Way",
-      "ST": "Oregon"
+      "ST": "Karnataka"
     }
   ]
 }
@@ -258,11 +258,11 @@ cat > kube-controller-manager-csr.json <<EOF
   },
   "names": [
     {
-      "C": "US",
+      "C": "IN",
       "L": "Portland",
       "O": "system:kube-controller-manager",
       "OU": "Kubernetes The Hard Way",
-      "ST": "Oregon"
+      "ST": "Karnataka"
     }
   ]
 }
@@ -294,11 +294,11 @@ cat > kube-proxy-csr.json <<EOF
   },
   "names": [
     {
-      "C": "US",
+      "C": "IN",
       "L": "Portland",
       "O": "system:node-proxier",
       "OU": "Kubernetes The Hard Way",
-      "ST": "Oregon"
+      "ST": "Karnataka"
     }
   ]
 }
@@ -330,11 +330,11 @@ cat > kube-scheduler-csr.json <<EOF
   },
   "names": [
     {
-      "C": "US",
+      "C": "IN",
       "L": "Portland",
       "O": "system:kube-scheduler",
       "OU": "Kubernetes The Hard Way",
-      "ST": "Oregon"
+      "ST": "Karnataka"
     }
   ]
 }
@@ -371,11 +371,11 @@ cat > kubernetes-csr.json <<EOF
   },
   "names": [
     {
-      "C": "US",
+      "C": "IN",
       "L": "Portland",
       "O": "Kubernetes",
       "OU": "Kubernetes The Hard Way",
-      "ST": "Oregon"
+      "ST": "Karnataka"
     }
   ]
 }
@@ -410,11 +410,11 @@ cat > service-account-csr.json <<EOF
   },
   "names": [
     {
-      "C": "US",
+      "C": "IN",
       "L": "Portland",
       "O": "Kubernetes",
       "OU": "Kubernetes The Hard Way",
-      "ST": "Oregon"
+      "ST": "Karnataka"
     }
   ]
 }
@@ -452,13 +452,13 @@ cfssl gencert \
 
 ### Client Authentication Configs
 
-In this section you will generate kubeconfig files for the `controller manager`, `kubelet`, `kube-proxy`, and `scheduler` clients and the `admin` user.
+In this section you will generate kubeconfig files for the `controller manager`, `kubelet`, `kube-proxy`, and `scheduler` clients and the `admin` INer.
 
 
 
 #### The kubelet Kubernetes Configuration File
 
-When generating kubeconfig files for Kubelets the client certificate matching the Kubelet's node name must be used. This will ensure Kubelets are properly authorized by the Kubernetes [Node Authorizer](https://kubernetes.io/docs/admin/authorization/node/).
+When generating kubeconfig files for Kubelets the client certificate matching the Kubelet's node name mINt be INed. This will ensure Kubelets are properly authorized by the Kubernetes [Node Authorizer](https://kubernetes.io/docs/admin/authorization/node/).
 
 - Generate a kubeconfig file for each worker node:
 
@@ -467,7 +467,7 @@ When generating kubeconfig files for Kubelets the client certificate matching th
 KUBERNETES_PUBLIC_ADDRESS=${LOADBALANCER_IP}
 
 for instance in worker-1 worker-2; do
-  kubectl config set-cluster kubernetes-the-hard-way \
+  kubectl config set-clINter kubernetes-the-hard-way \
     --certificate-authority=ca.pem \
     --embed-certs=true \
     --server=https://${KUBERNETES_PUBLIC_ADDRESS}:6443 \
@@ -480,11 +480,11 @@ for instance in worker-1 worker-2; do
     --kubeconfig=${instance}.kubeconfig
 
   kubectl config set-context default \
-    --cluster=kubernetes-the-hard-way \
-    --user=system:node:${instance} \
+    --clINter=kubernetes-the-hard-way \
+    --INer=system:node:${instance} \
     --kubeconfig=${instance}.kubeconfig
 
-  kubectl config use-context default --kubeconfig=${instance}.kubeconfig
+  kubectl config INe-context default --kubeconfig=${instance}.kubeconfig
 done
 }
 
@@ -500,7 +500,7 @@ done
   KUBERNETES_PUBLIC_ADDRESS=${LOADBALANCER_IP}
   
   
-  kubectl config set-cluster kubernetes-the-hard-way \
+  kubectl config set-clINter kubernetes-the-hard-way \
     --certificate-authority=ca.pem \
     --embed-certs=true \
     --server=https://${KUBERNETES_PUBLIC_ADDRESS}:6443 \
@@ -513,11 +513,11 @@ done
     --kubeconfig=kube-proxy.kubeconfig
 
   kubectl config set-context default \
-    --cluster=kubernetes-the-hard-way \
-    --user=system:kube-proxy \
+    --clINter=kubernetes-the-hard-way \
+    --INer=system:kube-proxy \
     --kubeconfig=kube-proxy.kubeconfig
 
-  kubectl config use-context default --kubeconfig=kube-proxy.kubeconfig
+  kubectl config INe-context default --kubeconfig=kube-proxy.kubeconfig
 }
 
 ```
@@ -528,7 +528,7 @@ done
 
 ```command
 {
-  kubectl config set-cluster kubernetes-the-hard-way \
+  kubectl config set-clINter kubernetes-the-hard-way \
     --certificate-authority=ca.pem \
     --embed-certs=true \
     --server=https://127.0.0.1:6443 \
@@ -541,11 +541,11 @@ done
     --kubeconfig=kube-controller-manager.kubeconfig
 
   kubectl config set-context default \
-    --cluster=kubernetes-the-hard-way \
-    --user=system:kube-controller-manager \
+    --clINter=kubernetes-the-hard-way \
+    --INer=system:kube-controller-manager \
     --kubeconfig=kube-controller-manager.kubeconfig
 
-  kubectl config use-context default --kubeconfig=kube-controller-manager.kubeconfig
+  kubectl config INe-context default --kubeconfig=kube-controller-manager.kubeconfig
 }
 ```
 
@@ -555,7 +555,7 @@ done
 
 ```command
 {
-  kubectl config set-cluster kubernetes-the-hard-way \
+  kubectl config set-clINter kubernetes-the-hard-way \
     --certificate-authority=ca.pem \
     --embed-certs=true \
     --server=https://127.0.0.1:6443 \
@@ -568,22 +568,22 @@ done
     --kubeconfig=kube-scheduler.kubeconfig
 
   kubectl config set-context default \
-    --cluster=kubernetes-the-hard-way \
-    --user=system:kube-scheduler \
+    --clINter=kubernetes-the-hard-way \
+    --INer=system:kube-scheduler \
     --kubeconfig=kube-scheduler.kubeconfig
 
-  kubectl config use-context default --kubeconfig=kube-scheduler.kubeconfig
+  kubectl config INe-context default --kubeconfig=kube-scheduler.kubeconfig
 }
 ```
 
 
 ### The admin Kubernetes Configuration File
 
-- Generate a kubeconfig file for the `admin` user:
+- Generate a kubeconfig file for the `admin` INer:
 
 ```command
 {
-  kubectl config set-cluster kubernetes-the-hard-way \
+  kubectl config set-clINter kubernetes-the-hard-way \
     --certificate-authority=ca.pem \
     --embed-certs=true \
     --server=https://127.0.0.1:6443 \
@@ -596,11 +596,11 @@ done
     --kubeconfig=admin.kubeconfig
 
   kubectl config set-context default \
-    --cluster=kubernetes-the-hard-way \
-    --user=admin \
+    --clINter=kubernetes-the-hard-way \
+    --INer=admin \
     --kubeconfig=admin.kubeconfig
 
-  kubectl config use-context default --kubeconfig=admin.kubeconfig
+  kubectl config INe-context default --kubeconfig=admin.kubeconfig
 }
 ```
 
@@ -623,9 +623,9 @@ Copy the appropriate `kubelet` and `kube-proxy` kubeconfig files to each worker 
 
 ## Generating the Data Encryption Config and Key
 
-Kubernetes stores a variety of data including cluster state, application configurations, and secrets. Kubernetes supports the ability to [encrypt](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data) cluster data at rest.
+Kubernetes stores a variety of data including clINter state, application configurations, and secrets. Kubernetes supports the ability to [encrypt](https://kubernetes.io/docs/tasks/administer-clINter/encrypt-data) clINter data at rest.
 
-In this lab you will generate an encryption key and an [encryption config](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/#understanding-the-encryption-at-rest-configuration) suitable for encrypting Kubernetes Secrets.
+In this lab you will generate an encryption key and an [encryption config](https://kubernetes.io/docs/tasks/administer-clINter/encrypt-data/#understanding-the-encryption-at-rest-configuration) suitable for encrypting Kubernetes Secrets.
 
 ### The Encryption Key
 
