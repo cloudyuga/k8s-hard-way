@@ -158,7 +158,6 @@ sudo ETCDCTL_API=3 etcdctl member list \
   --cert=/etc/etcd/kubernetes.pem \
   --key=/etc/etcd/kubernetes-key.pem
 ```
-> output
 ```
 102a13d1003e5d5a, started, master-2, https://10.135.86.233:2380, https://10.135.86.233:2379
 f5ca186f2ed6cf38, started, master-1, https://10.135.86.233:2380, https://10.135.86.233:2379
