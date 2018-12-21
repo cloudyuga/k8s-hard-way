@@ -6,6 +6,18 @@
 
 ## Tools
 
+- Install `sudo`. Get a root access in terminal by using `exit`
+
+```command
+apt install sudo
+```
+
+- Once you done with installation you will login with username by
+
+```command
+su - $USERNAME
+```
+
 ### Create SSH Keys.
 
 ```command
@@ -43,10 +55,10 @@ The key's randomart image is:
 - Download [Terraform binary](https://www.terraform.io/intro/getting-started/install.html) and add it to PATH.
 
 ```command
-apt install unzip
+sudo apt install unzip
 wget https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
 unzip terraform_0.11.7_linux_amd64.zip
-mv terraform /usr/bin/.
+sudo mv terraform /usr/bin/.
 terraform version
 ```
 - We are asuming your public keys and private keys are located at `~/.ssh/id_rsa.pub` and `~/.ssh/id_rsa`
