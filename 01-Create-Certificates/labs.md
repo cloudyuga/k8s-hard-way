@@ -106,7 +106,7 @@ cat > ca-csr.json <<EOF
   "names": [
     {
       "C": "IN",
-      "L": "Portland",
+      "L": "Bangalore",
       "O": "Kubernetes",
       "OU": "CA",
       "ST": "Karnataka"
@@ -141,7 +141,7 @@ cat > admin-csr.json <<EOF
   "names": [
     {
       "C": "IN",
-      "L": "Portland",
+      "L": "Bangalore",
       "O": "system:master-0s",
       "OU": "Kubernetes The Hard Way",
       "ST": "Karnataka"
@@ -179,7 +179,7 @@ cat > worker-1-csr.json <<EOF
   "names": [
     {
       "C": "IN",
-      "L": "Portland",
+      "L": "Bangalore",
       "O": "system:nodes",
       "OU": "Kubernetes The Hard Way",
       "ST": "Karnataka"
@@ -211,7 +211,7 @@ cat > worker-2-csr.json <<EOF
   "names": [
     {
       "C": "IN",
-      "L": "Portland",
+      "L": "Bangalore",
       "O": "system:nodes",
       "OU": "Kubernetes The Hard Way",
       "ST": "Karnataka"
@@ -248,7 +248,7 @@ cat > kube-controller-manager-csr.json <<EOF
   "names": [
     {
       "C": "IN",
-      "L": "Portland",
+      "L": "Bangalore",
       "O": "system:kube-controller-manager",
       "OU": "Kubernetes The Hard Way",
       "ST": "Karnataka"
@@ -284,7 +284,7 @@ cat > kube-proxy-csr.json <<EOF
   "names": [
     {
       "C": "IN",
-      "L": "Portland",
+      "L": "Bangalore",
       "O": "system:node-proxier",
       "OU": "Kubernetes The Hard Way",
       "ST": "Karnataka"
@@ -320,7 +320,7 @@ cat > kube-scheduler-csr.json <<EOF
   "names": [
     {
       "C": "IN",
-      "L": "Portland",
+      "L": "Bangalore",
       "O": "system:kube-scheduler",
       "OU": "Kubernetes The Hard Way",
       "ST": "Karnataka"
@@ -361,7 +361,7 @@ cat > kubernetes-csr.json <<EOF
   "names": [
     {
       "C": "IN",
-      "L": "Portland",
+      "L": "Bangalore",
       "O": "Kubernetes",
       "OU": "Kubernetes The Hard Way",
       "ST": "Karnataka"
@@ -400,7 +400,7 @@ cat > service-account-csr.json <<EOF
   "names": [
     {
       "C": "IN",
-      "L": "Portland",
+      "L": "Bangalore",
       "O": "Kubernetes",
       "OU": "Kubernetes The Hard Way",
       "ST": "Karnataka"
