@@ -317,9 +317,10 @@ kubectl get componentstatuses
 ```
 ```
 NAME                 STATUS    MESSAGE             ERROR
-scheduler            Healthy   ok                  
-controller-manager   Healthy   ok                  
-etcd-0               Healthy   {"health":"true"} 
+scheduler            Healthy   ok
+controller-manager   Healthy   ok
+etcd-1               Healthy   {"health":"true"}
+etcd-0               Healthy   {"health":"true"}
 ```
 
 - Test the nginx HTTP health check proxy:
@@ -395,12 +396,12 @@ curl --cacert /etc/etcd/ca.pem https://${MASTER_2_PRIVATE_IP}:6443/version
 ```
 {
   "major": "1",
-  "minor": "10",
-  "gitVersion": "v1.10.2",
-  "gitCommit": "81753b10df112992bf51bbc2c2f85208aad78335",
+  "minor": "12",
+  "gitVersion": "v1.12.0",
+  "gitCommit": "0ed33881dc4355495f623c6f22e7dd0b7632b7c0",
   "gitTreeState": "clean",
-  "buildDate": "2018-04-27T09:10:24Z",
-  "goVersion": "go1.9.3",
+  "buildDate": "2018-09-27T16:55:41Z",
+  "goVersion": "go1.10.4",
   "compiler": "gc",
   "platform": "linux/amd64"
 }
@@ -414,14 +415,14 @@ curl --cacert /etc/etcd/ca.pem https://${MASTER_1_PRIVATE_IP}:6443/version
 ```
 {
   "major": "1",
-  "minor": "10",
-  "gitVersion": "v1.10.2",
-  "gitCommit": "81753b10df112992bf51bbc2c2f85208aad78335",
+  "minor": "12",
+  "gitVersion": "v1.12.0",
+  "gitCommit": "0ed33881dc4355495f623c6f22e7dd0b7632b7c0",
   "gitTreeState": "clean",
-  "buildDate": "2018-04-27T09:10:24Z",
-  "goVersion": "go1.9.3",
+  "buildDate": "2018-09-27T16:55:41Z",
+  "goVersion": "go1.10.4",
   "compiler": "gc",
-  "platform": "linux/amd64
+  "platform": "linux/amd64"
 }
 ```
 
@@ -432,15 +433,17 @@ curl --cacert /etc/etcd/ca.pem https://${MASTER_1_PRIVATE_IP}:6443/version
 curl --cacert /etc/etcd/ca.pem https://${LOADBALANCER_IP}:6443/version
 ```
 ```
+{
   "major": "1",
-  "minor": "10",
-  "gitVersion": "v1.10.2",
-  "gitCommit": "81753b10df112992bf51bbc2c2f85208aad78335",
+  "minor": "12",
+  "gitVersion": "v1.12.0",
+  "gitCommit": "0ed33881dc4355495f623c6f22e7dd0b7632b7c0",
   "gitTreeState": "clean",
-  "buildDate": "2018-04-27T09:10:24Z",
-  "goVersion": "go1.9.3",
+  "buildDate": "2018-09-27T16:55:41Z",
+  "goVersion": "go1.10.4",
   "compiler": "gc",
   "platform": "linux/amd64"
+}
 ```
 
 - Create a ClusterRoleBinding for the remote cluster access.
