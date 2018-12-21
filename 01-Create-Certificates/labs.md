@@ -22,44 +22,16 @@ worker-2  <WORKER_2_PUBLIC_IP>         <WORKER_2_PRIVATE_IP>
 export LOADBALANCER_IP=
 ```
 
-- Export Master1 PrivateIP and PublicIP
+- Export other components PrivateIP and PublicIP
 
 ```command
-export MASTER_1_PUBLIC_IP=
+bash env.sh
 ```
 
-```command
-export MASTER_1_PRIVATE_IP=
-```
-
-- Export Master2 PrivateIP and PublicIP
+- Reload shell.
 
 ```command
-export MASTER_2_PUBLIC_IP=
-```
-
-```command
-export MASTER_2_PRIVATE_IP=
-```
-
-- Export Worker1 PrivateIP and PublicIP
-
-```command
-export WORKER_1_PUBLIC_IP=
-```
-
-```command
-export WORKER_1_PRIVATE_IP=
-```
-
-- Export Worker2 PrivateIP and PublicIP
-
-```command
-export WORKER_2_PUBLIC_IP=
-```
-
-```command
-export WORKER_2_PRIVATE_IP=
+source ~/.bashrc
 ```
 
 - Install `cfssl` on the machine [Workstation] from where you can access all these nodes. The cfssl and cfssljson command line utilities will be used to provision a PKI Infrastructure and generate TLS certificates.
