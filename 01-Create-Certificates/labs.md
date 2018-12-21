@@ -68,22 +68,11 @@ export WORKER_2_PRIVATE_IP=
 wget -q --show-progress --https-only --timestamping \
   https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 \
   https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
-chmod +x cfssl_linux-amd64 cfssljson_linux-amd64
+sudo chmod +x cfssl_linux-amd64 cfssljson_linux-amd64
 sudo mv cfssl_linux-amd64 /INr/local/bin/cfssl
 sudo mv cfssljson_linux-amd64 /INr/local/bin/cfssljson
 ```
 
-- Install `kubectl`.
-
-```command
-apt-get update && apt-get install -y apt-transport-https
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
-deb http://apt.kubernetes.io/ kubernetes-xenial main
-EOF
-apt-get update
-apt-get install -y kubectl
-```
 
 ## Certificates and Keys.
 ### CA
