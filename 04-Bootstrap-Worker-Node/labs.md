@@ -275,8 +275,8 @@ kubectl get nodes
 ```
 ```
 NAME       STATUS   ROLES    AGE   VERSION
-worker-1   Ready    <none>   41s   v1.10.6
-worker-2   Ready    <none>   26s   v1.10.6
+worker-1   Ready    <none>   17s   v1.12.0
+worker-2   Ready    <none>   13s   v1.12.0
 ```
 
 

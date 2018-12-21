@@ -52,9 +52,9 @@ etcd-1               Healthy   {"health":"true"}
 kubectl get nodes
 ```
 ```
-NAME       STATUS   ROLES    AGE   VERSION
-worker-1   Ready    <none>   4m    v1.10.6
-worker-2   Ready    <none>   3m    v1.10.6
+NAME       STATUS   ROLES    AGE     VERSION
+worker-1   Ready    <none>   2m15s   v1.12.0
+worker-2   Ready    <none>   2m11s   v1.12.0
 ```
 
 
@@ -65,6 +65,16 @@ worker-2   Ready    <none>   3m    v1.10.6
 kubectl apply -f https://storage.googleapis.com/kubernetes-the-hard-way/coredns.yaml
 ```
 
+- Verify pods are running
+
+```command
+kubectl get pods -l k8s-app=kube-dns-n kube-system
+```
+```
+NAME                       READY   STATUS    RESTARTS   AGE
+coredns-699f8ddd77-6l7rz   1/1     Running   0          18s
+coredns-699f8ddd77-sg9jd   1/1     Running   0          18s
+```
 
 - Cluster info.
 
