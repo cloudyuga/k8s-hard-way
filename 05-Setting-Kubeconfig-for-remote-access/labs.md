@@ -62,7 +62,7 @@ worker-2   Ready    <none>   3m    v1.10.6
 ## Apply the DNS. [On Master node]
 
 ```command
-kubectl create -f https://raw.githubusercontent.com/kelseyhightower/kubernetes-the-hard-way/master/deployments/kube-dns.yaml
+kubectl apply -f https://storage.googleapis.com/kubernetes-the-hard-way/coredns.yaml
 ```
 
 
