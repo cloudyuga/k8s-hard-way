@@ -79,6 +79,24 @@ ls
 ./creation.sh
 ```
 
+- Export Load Balancer IP.
+
+```command
+export LOADBALANCER_IP=
+```
+
+- Export other components PrivateIP and PublicIP
+
+```command
+bash env.sh
+```
+
+- Reload shell.
+
+```command
+source ~/.bashrc
+```
+
 ### Delete Cluster.
 
 
