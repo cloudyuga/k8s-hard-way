@@ -5,15 +5,24 @@ In this lab you will bootstrap the Kubernetes control plane across three compute
 
 - Export Internal IP of Master1 and Master2 on both nodes.
 
+
+
+
 ```command
 export MASTER_1_PRIVATE_IP=
 ```
+
+
+
 
 ```command
 export MASTER_2_PRIVATE_IP=
 ```
 
 - Export Load Balancer IP.
+
+
+
 
 ```command
 export LOADBALANCER_IP=
@@ -24,6 +33,9 @@ export LOADBALANCER_IP=
 
 - Create the Kubernetes configuration directory:
 
+
+
+
 ```command
 sudo mkdir -p /etc/kubernetes/config
 ```
@@ -31,6 +43,9 @@ sudo mkdir -p /etc/kubernetes/config
 ### Download and Install the Kubernetes Controller Binaries on both `master-1` and `master-2` nodes.
 
 - Download the official Kubernetes release binaries:
+
+
+
 
 ```command
 wget -q --show-progress --https-only --timestamping \
@@ -40,6 +55,9 @@ wget -q --show-progress --https-only --timestamping \
 ```
 
 - Install the Kubernetes binaries:
+
+
+
 
 ```command
 {
@@ -60,6 +78,9 @@ apt-get install -y kubectl
 
 - Create directory and set cerificates
 
+
+
+
 ```command
 {
   sudo mkdir -p /var/lib/kubernetes/
@@ -73,6 +94,9 @@ apt-get install -y kubectl
 ### Configure the Kubernetes API Server on both `master-1` and `master-2` nodes.
 
 - Create the `kube-apiserver.service` systemd unit file on `master-1`:
+
+
+
 
 ```command
 
@@ -125,6 +149,9 @@ EOF
 
 - Create the `kube-apiserver.service` systemd unit file on `master-2`:
 
+
+
+
 ```command
 
 cat <<EOF | sudo tee /etc/systemd/system/kube-apiserver.service
@@ -176,11 +203,17 @@ EOF
 
 - Move the `kube-controller-manager` kubeconfig into place:
 
+
+
+
 ```command
 sudo mv kube-controller-manager.kubeconfig /var/lib/kubernetes/
 ```
 
 - Create the `kube-controller-manager.service` systemd unit file:
+
+
+
 
 ```command
 cat <<EOF | sudo tee /etc/systemd/system/kube-controller-manager.service
@@ -214,11 +247,17 @@ EOF
 
 - Move the `kube-scheduler` kubeconfig into place:
 
+
+
+
 ```command
 sudo mv kube-scheduler.kubeconfig /var/lib/kubernetes/
 ```
 
 - Create the `kube-scheduler.yaml` configuration file:
+
+
+
 
 ```command
 cat <<EOF | sudo tee /etc/kubernetes/config/kube-scheduler.yaml
@@ -232,6 +271,9 @@ EOF
 ```
 
 - Create the `kube-scheduler.service` systemd unit file:
+
+
+
 
 ```command
 cat <<EOF | sudo tee /etc/systemd/system/kube-scheduler.service
@@ -253,6 +295,9 @@ EOF
 
 ### Start the Controller Services on both `master-1` and `master-2` nodes.
 
+
+
+
 ```command
 {
   sudo systemctl daemon-reload
@@ -267,10 +312,16 @@ Wait up to 60 seconds for the Kubernetes API Server to fully initialize.
 
 - Install a basic web server to handle HTTP health checks:
 
+
+
+
 ```command
 sudo apt-get update
 sudo apt-get install -y nginx
 ```
+
+
+
 
 ```command
 cat > kubernetes.default.svc.cluster.local <<EOF
@@ -288,6 +339,9 @@ EOF
 
 - Move configuration.
 
+
+
+
 ```command
 {
   sudo mv kubernetes.default.svc.cluster.local \
@@ -298,6 +352,9 @@ EOF
 ```
 
 - Restart Nginx service.
+
+
+
 
 ```command
 sudo systemctl restart nginx
@@ -312,6 +369,9 @@ sudo systemctl enable nginx
 
 - Get the component status.
 
+
+
+
 ```command
 kubectl get componentstatuses
 ```
@@ -324,6 +384,9 @@ etcd-0               Healthy   {"health":"true"}
 ```
 
 - Test the nginx HTTP health check proxy:
+
+
+
 
 ```command
 curl -H "Host: kubernetes.default.svc.cluster.local" -i http://127.0.0.1/healthz
@@ -342,6 +405,9 @@ Connection: keep-alive
 In this section you will configure RBAC permissions to allow the Kubernetes API Server to access the Kubelet API on each worker node. Access to the Kubelet API is required for retrieving metrics, logs, and executing commands in pods.
 
 - Create Cluster role.
+
+
+
 
 ```command
 cat <<EOF | kubectl apply  -f -
@@ -369,6 +435,9 @@ EOF
 
 - Bind the roles.
 
+
+
+
 ```command
 cat <<EOF | kubectl apply -f -
 apiVersion: rbac.authorization.k8s.io/v1beta1
@@ -388,6 +457,9 @@ EOF
 ```
 
 - Make HTTPS request to get kubernetes version. We will use `master-2` Private IP.
+
+
+
 
 ```command
 curl --cacert /etc/etcd/ca.pem https://${MASTER_2_PRIVATE_IP}:6443/version
@@ -409,6 +481,9 @@ curl --cacert /etc/etcd/ca.pem https://${MASTER_2_PRIVATE_IP}:6443/version
 
 - Make HTTPS request to get kubernetes version. We will use `master-1` Private IP.
 
+
+
+
 ```command
 curl --cacert /etc/etcd/ca.pem https://${MASTER_1_PRIVATE_IP}:6443/version
 ```
@@ -429,6 +504,9 @@ curl --cacert /etc/etcd/ca.pem https://${MASTER_1_PRIVATE_IP}:6443/version
 
 - In Digital Ocean configure your load balancer with TCP rule to forward traffic from 6443 to 6443 port. and verify that we can access the kubernetes control plane using Load Balancer.
 
+
+
+
 ```command
 curl --cacert /etc/etcd/ca.pem https://${LOADBALANCER_IP}:6443/version
 ```
@@ -447,6 +525,9 @@ curl --cacert /etc/etcd/ca.pem https://${LOADBALANCER_IP}:6443/version
 ```
 
 - Create a ClusterRoleBinding for the remote cluster access.
+
+
+
 
 ```command
 {

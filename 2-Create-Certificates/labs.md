@@ -16,6 +16,9 @@ worker-2  <WORKER_2_PUBLIC_IP>         <WORKER_2_PRIVATE_IP>
 
 - Install `cfssl` on the machine [Workstation] from where you can access all these nodes. The cfssl and cfssljson command line utilities will be used to provision a PKI Infrastructure and generate TLS certificates.
 
+
+
+
 ```command
 wget -q --show-progress --https-only --timestamping \
   https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 \
@@ -29,6 +32,9 @@ export $PATH=PATH:`pwd`
 
 ## Certificates and Keys.
 ### CA
+
+
+
 
 ```command
 {
@@ -81,6 +87,9 @@ In this section you will generate client and server certificates for each Kubern
 
 - Generate the `admin` client certificate and private key:
 
+
+
+
 ```command
 {
 
@@ -121,6 +130,9 @@ Kubernetes uses a [special-purpose authorization mode](https://kubernetes.io/doc
 
 ### Generate a certificate and private key for Kubernetes worker-1
 
+
+
+
 ```command
 cat > worker-1-csr.json <<EOF
 {
@@ -152,6 +164,9 @@ cfssl gencert \
 ```
 
 ### Generate a certificate and private key for Kubernetes worker-2
+
+
+
 
 ```command
 cat > worker-2-csr.json <<EOF
@@ -187,6 +202,9 @@ cfssl gencert \
 ### The Controller Manager Client Certificate
 
 - Generate the `kube-controller-manager` client certificate and private key:
+
+
+
 
 ```command
 {
@@ -224,6 +242,9 @@ cfssl gencert \
 
 - Generate the `kube-proxy` client certificate and private key:
 
+
+
+
 ```command
 {
 
@@ -259,6 +280,9 @@ cfssl gencert \
 ### The Scheduler Client Certificate
 
 - Generate the `kube-scheduler` client certificate and private key:
+
+
+
 
 ```command
 {
@@ -296,6 +320,9 @@ cfssl gencert \
 `KUBERNETES_PUBLIC_ADDRESS=` is IP address of Load Balancer
 
 - Generate the Kubernetes API Server certificate and private key:
+
+
+
 
 ```command
 
@@ -340,6 +367,9 @@ The Kubernetes Controller Manager leverages a key pair to generate and sign serv
 
 - Generate the `service-account` certificate and private key:
 
+
+
+
 ```command
 {
 
@@ -378,6 +408,9 @@ cfssl gencert \
 
 - To worker1
 
+
+
+
 ```command
 
  scp ca.pem worker-1-key.pem worker-1.pem root@${WORKER_1_PUBLIC_IP}:~/
@@ -385,6 +418,9 @@ cfssl gencert \
 ```
 
 - To worker2
+
+
+
 
 ```command
  scp ca.pem worker-2-key.pem worker-2.pem root@${WORKER_2_PUBLIC_IP}:~/
@@ -403,6 +439,9 @@ In this section you will generate kubeconfig files for the `controller manager`,
 When generating kubeconfig files for Kubelets the client certificate matching the Kubelet's node name must be used. This will ensure Kubelets are properly authorized by the Kubernetes [Node Authorizer](https://kubernetes.io/docs/admin/authorization/node/).
 
 - Generate a kubeconfig file for each worker node:
+
+
+
 
 ```command
 {
@@ -437,6 +476,9 @@ done
 
 - Generate a kubeconfig file for the `kube-proxy` service:
 
+
+
+
 ```command
 {
   KUBERNETES_PUBLIC_ADDRESS=${LOADBALANCER_IP}
@@ -468,6 +510,9 @@ done
 
 - Generate a kubeconfig file for the `kube-controller-manager` service:
 
+
+
+
 ```command
 {
   kubectl config set-cluster kubernetes-the-hard-way \
@@ -494,6 +539,9 @@ done
 ### The kube-scheduler Kubernetes Configuration File
 
 - Generate a kubeconfig file for the `kube-scheduler` service:
+
+
+
 
 ```command
 {
@@ -522,6 +570,9 @@ done
 ### The admin Kubernetes Configuration File
 
 - Generate a kubeconfig file for the `admin` user:
+
+
+
 
 ```command
 {
@@ -552,11 +603,17 @@ Copy the appropriate `kubelet` and `kube-proxy` kubeconfig files to each worker 
 
 - worker-1
 
+
+
+
 ```command
  scp worker-1.kubeconfig kube-proxy.kubeconfig root@${WORKER_1_PUBLIC_IP}:~/
 ```
 
 - worker-2
+
+
+
 
 ```command
  scp worker-2.kubeconfig kube-proxy.kubeconfig root@${WORKER_2_PUBLIC_IP}:~/
@@ -573,6 +630,9 @@ In this lab you will generate an encryption key and an [encryption config](https
 
 - Generate an encryption key:
 
+
+
+
 ```command
 ENCRYPTION_KEY=$(head -c 32 /dev/urandom | base64)
 ```
@@ -580,6 +640,9 @@ ENCRYPTION_KEY=$(head -c 32 /dev/urandom | base64)
 ### The Encryption Config File
 
 - Create the `encryption-config.yaml` encryption config file:
+
+
+
 
 ```command
 ENCRYPTION_KEY=$(head -c 32 /dev/urandom | base64)
@@ -602,11 +665,17 @@ EOF
 
 - For `master-1` node.
 
+
+
+
 ```command
 scp ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem service-account-key.pem service-account.pem admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig encryption-config.yaml root@${MASTER_1_PUBLIC_IP}:~/.
 ```
 
 - For `master-2` node.
+
+
+
 
 ```command
 scp ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem service-account-key.pem service-account.pem admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig encryption-config.yaml root@${MASTER_2_PUBLIC_IP}:~/.

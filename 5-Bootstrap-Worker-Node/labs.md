@@ -7,6 +7,9 @@
 
 - Install the OS dependencies:
 
+
+
+
 ```command
 {
   sudo apt-get update
@@ -17,6 +20,9 @@
 The `socat` binary enables support for the `kubectl port-forward` command.
 
 ### Download and Install Worker Binaries on both worker-1 and worker-2 nodes
+
+
+
 
 ```command
 
@@ -34,6 +40,9 @@ wget -q --show-progress --https-only --timestamping \
 
 - Create the installation directories:
 
+
+
+
 ```command
 sudo mkdir -p \
   /etc/cni/net.d \
@@ -45,6 +54,9 @@ sudo mkdir -p \
 ```
 
 - Install the worker binaries:
+
+
+
 
 ```command
 {
@@ -61,6 +73,9 @@ sudo mkdir -p \
 ### Configure CNI Networking on  worker-1
 
 - Create the `bridge` network configuration file:
+
+
+
 
 ```command
 cat <<EOF | sudo tee /etc/cni/net.d/10-bridge.conf
@@ -85,6 +100,9 @@ EOF
 
 - Create the `loopback` network configuration file:
 
+
+
+
 ```command
 cat <<EOF | sudo tee /etc/cni/net.d/99-loopback.conf
 {
@@ -97,6 +115,9 @@ EOF
 ### Configure CNI Networking on worker-2 
 
 - Create the `bridge` network configuration file:
+
+
+
 
 ```command
 cat <<EOF | sudo tee /etc/cni/net.d/10-bridge.conf
@@ -121,6 +142,9 @@ EOF
 
 - Create the `loopback` network configuration file:
 
+
+
+
 ```command
 cat <<EOF | sudo tee /etc/cni/net.d/99-loopback.conf
 {
@@ -136,9 +160,15 @@ EOF
 
 - Create the `containerd` configuration file:
 
+
+
+
 ```command
 sudo mkdir -p /etc/containerd/
 ```
+
+
+
 
 ```command
 cat << EOF | sudo tee /etc/containerd/config.toml
@@ -163,6 +193,9 @@ EOF
 - Untrusted workloads will be run using the gVisor (runsc) runtime.
 
 - Create the `containerd.service` systemd unit file:
+
+
+
 
 ```command
 cat <<EOF | sudo tee /etc/systemd/system/containerd.service
@@ -190,6 +223,9 @@ EOF
 
 ### Configure the Kubelet on worker-1 
 
+
+
+
 ```command
 {
   sudo mv ${HOSTNAME}-key.pem ${HOSTNAME}.pem /var/lib/kubelet/
@@ -199,6 +235,9 @@ EOF
 ```
 
 - Create the `kubelet-config.yaml` configuration file:
+
+
+
 
 ```command
 cat <<EOF | sudo tee /var/lib/kubelet/kubelet-config.yaml
@@ -225,6 +264,9 @@ EOF
 
 ### Configure the Kubelet on worker-2 
 
+
+
+
 ```command
 {
   sudo mv ${HOSTNAME}-key.pem ${HOSTNAME}.pem /var/lib/kubelet/
@@ -234,6 +276,9 @@ EOF
 ```
 
 - Create the `kubelet-config.yaml` configuration file:
+
+
+
 
 ```command
 cat <<EOF | sudo tee /var/lib/kubelet/kubelet-config.yaml
@@ -260,6 +305,9 @@ EOF
 
 
 ###  Create the `kubelet.service` systemd unit file on both worker-1 and worker-2 nodes.
+
+
+
 
 ```command
 cat <<EOF | sudo tee /etc/systemd/system/kubelet.service
@@ -289,11 +337,17 @@ EOF
 
 ### Configure the Kubernetes Proxy on both worker-1 and worker-2 nodes.
 
+
+
+
 ```command
 sudo mv kube-proxy.kubeconfig /var/lib/kube-proxy/kubeconfig
 ```
 
 - Create the `kube-proxy-config.yaml` configuration file:
+
+
+
 
 ```command
 cat <<EOF | sudo tee /var/lib/kube-proxy/kube-proxy-config.yaml
@@ -307,6 +361,9 @@ EOF
 ```
 
 - Create the `kube-proxy.service` systemd unit file:
+
+
+
 
 ```command
 cat <<EOF | sudo tee /etc/systemd/system/kube-proxy.service
@@ -327,6 +384,9 @@ EOF
 
 ### Start the Worker Services on both worker-1 and worker-2 nodes.
 
+
+
+
 ```command
 {
   sudo systemctl daemon-reload
@@ -342,6 +402,9 @@ EOF
 ## Verification [Master Nodes]
 
 - Goto master node and get the list of the nodes.
+
+
+
 
 ```command
 kubectl get nodes
