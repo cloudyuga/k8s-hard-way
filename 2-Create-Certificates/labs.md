@@ -26,7 +26,7 @@ wget -q --show-progress --https-only --timestamping \
 chmod +x cfssl_linux-amd64 cfssljson_linux-amd64
 mv cfssl_linux-amd64 cfssl
 mv cfssljson_linux-amd64 cfssljson
-export $PATH=PATH:`pwd`
+export PATH=$PATH:`pwd`
 ```
 
 
