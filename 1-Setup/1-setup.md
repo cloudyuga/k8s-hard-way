@@ -6,6 +6,7 @@
 
 ### Create SSH Keys.
 
+
 ```command
 ssh-keygen -t rsa
 ```
@@ -44,6 +45,7 @@ The key's randomart image is:
 
 - Get a Fingerprint of Your SSH public key.
 
+
 ```command
 ssh-keygen -lf ~/.ssh/id_rsa.pub
 ```
@@ -53,17 +55,20 @@ ssh-keygen -lf ~/.ssh/id_rsa.pub
 
 - Export a Fingerprint shown in above output.
 
+
 ```command
 export FINGERPRINT=00:11:22:33:44:55:66:77:88:99:aa:bb:cc:dd:ee:ff
 ```
 
 - Export your DO Personal Access Token.
 
+
 ```command
 export TOKEN=##########<Your Digital Ocean Personal Access Token>##########
 ```
 
 - Now take a look at the directory.
+
 
 ```command
 ls
@@ -75,11 +80,13 @@ ls
 
 - Run the script.
 
+
 ```command
 ./creation.sh
 ```
 
 - Export Load Balancer IP.
+
 
 ```command
 export LOADBALANCER_IP=
@@ -87,17 +94,20 @@ export LOADBALANCER_IP=
 
 - Export other components PrivateIP and PublicIP
 
+
 ```command
 bash env.sh
 ```
 
 - Reload shell.
 
+
 ```command
 source ~/.bashrc
 ```
 
 ### Delete Cluster.
+
 
 
 ```command

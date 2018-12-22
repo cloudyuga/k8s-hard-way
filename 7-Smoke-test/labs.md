@@ -3,11 +3,17 @@ In this section you will verify the ability to create and manage [Deployments](h
 
 - Create a deployment for the [nginx](https://nginx.org/en/) web server:
 
+
+
+
 ```command
 kubectl run nginx --image=nginx:alpine
 ```
 
 - List the pod created by the `nginx` deployment:
+
+
+
 
 ```command
 kubectl get pods -l run=nginx
@@ -23,6 +29,9 @@ In this section you will verify the ability to access applications remotely usin
 
 - Make sure that, in the `/etc/hosts` of each node you have following entries.
 
+
+
+
 ```command
 cat <<EOF | sudo tee /etc/hosts
 ${WORKER_1_PUBLIC_IP} worker-1
@@ -34,11 +43,17 @@ EOF
 
 - Retrieve the full name of the `nginx` pod:
 
+
+
+
 ```command
 POD_NAME=$(kubectl get pods -l run=nginx -o jsonpath="{.items[0].metadata.name}")
 ```
 
 - Forward port `8088` on your local machine to port `80` of the `nginx` pod:
+
+
+
 
 ```command
 kubectl port-forward $POD_NAME 8088:80
@@ -46,6 +61,9 @@ kubectl port-forward $POD_NAME 8088:80
 
 
 - In a new terminal make an HTTP request using the forwarding address:
+
+
+
 
 ```command
 curl --head 127.0.0.1:8088
@@ -78,6 +96,9 @@ In this section you will verify the ability to [retrieve container logs](https:/
 
 - Print the `nginx` pod logs:
 
+
+
+
 ```command
 kubectl logs $POD_NAME
 ```
@@ -90,6 +111,9 @@ kubectl logs $POD_NAME
 In this section you will verify the ability to [execute commands in a container](https://kubernetes.io/docs/tasks/debug-application-cluster/get-shell-running-container/#running-individual-commands-in-a-container).
 
 - Print the nginx version by executing the `nginx -v` command in the `nginx` container:
+
+
+
 
 ```command
 kubectl exec -ti $POD_NAME -- nginx -v
@@ -104,11 +128,17 @@ In this section you will verify the ability to expose applications using a [Serv
 
 Expose the `nginx` deployment using a [NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport) service:
 
+
+
+
 ```command
 kubectl expose deployment nginx --port 80 --type NodePort
 ```
 
 - Retrieve the node port assigned to the `nginx` service:
+
+
+
 
 ```command
 NODE_PORT=$(kubectl get svc nginx \
@@ -118,6 +148,9 @@ echo $NODE_PORT
 ```      
 
 - Get the node on which our nginc pod is running.
+
+
+
 
 ```command
 kubectl get pod $POD_NAME -o wide
@@ -135,11 +168,17 @@ You can access the nginx at `$NODE_PORT` port of worker2's Public IP.
 
 - Create a `busybox` deployment:
 
+
+
+
 ```command
 kubectl run busybox --image=busybox:1.28 --command -- sleep 3600
 ```
 
 - List the pod created by the `busybox` deployment:
+
+
+
 
 ```command
 kubectl get pods -l run=busybox
@@ -151,11 +190,17 @@ busybox-bd8fb7cbd-vflm9   1/1     Running   0          10s
 
 - Retrieve the full name of the `busybox` pod:
 
+
+
+
 ```command
 POD_NAME=$(kubectl get pods -l run=busybox -o jsonpath="{.items[0].metadata.name}")
 ```
 
 - Get the list of the Services
+
+
+
 
 ```command
 kubectl get svc
@@ -167,6 +212,9 @@ nginx        NodePort    10.32.0.40   <none>        80:30625/TCP   43m
 ```
 
 - Execute a DNS lookup for the `kubernetes` service inside the `busybox` pod:
+
+
+
 
 ```command
 kubectl exec -ti $POD_NAME -- nslookup kubernetes
@@ -181,6 +229,9 @@ Address 1: 10.32.0.1 kubernetes.default.svc.cluster.local
 ```
 
 - Execute a DNS lookup for the `nginx` service inside the `busybox` pod:
+
+
+
 
 ```command
 kubectl exec -ti $POD_NAME -- nslookup nginx

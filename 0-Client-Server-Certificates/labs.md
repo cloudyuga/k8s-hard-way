@@ -2,7 +2,10 @@ K8s hardway Meetup
 ===============
 
 ## Self-signed CA
-```
+
+
+
+```command
 openssl genrsa -des3 -out rootCA.key 4096
 openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 1024 -out rootCA.crt
 ```
@@ -19,12 +22,18 @@ Email Address []:neependra@cloudyuga.guru
 ## Create a Server certificate 
 
 ### Generate Private Key
-```
+
+
+
+```command
 openssl genrsa -out k8smeetup.com.key 2048
 ```
 
 ### Generate Certificate Signing Request 
-```
+
+
+
+```command
 openssl req -new -key k8smeetup.com.key -out k8smeetup.com.csr
 ```
 
@@ -39,7 +48,10 @@ Email Address []:neependra@cloudyuga.guru
 ```
 
 ### Look at the CSR request 
-```
+
+
+
+```command
 openssl req -in k8smeetup.com.csr -noout -text
 ```
 ```
@@ -91,12 +103,18 @@ Certificate Request:
 ```
 
 ### Generate the Certificate
-```
+
+
+
+```command
 openssl x509 -req -in k8smeetup.com.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out k8smeetup.com.crt -days 500 -sha256
 ```
 
 ### Look at the Certificate 
-```
+
+
+
+```command
 openssl x509 -in k8smeetup.com.crt -text -noout
 ```
 
@@ -170,12 +188,18 @@ Certificate:
 ## Create a Client certificate 
 
 ### Generate Private Key
-```
+
+
+
+```command
 openssl genrsa -out client.key 2048
 ```
 
 ### Generate Certificate Signing Request 
-```
+
+
+
+```command
 openssl req -new -key client.key -out client.csr
 ```
 ```
@@ -189,7 +213,10 @@ Email Address []:neependra@cloudyuga.guru
 ```
 
 ### Look at the CSR request 
-```
+
+
+
+```command
 openssl req -in client.csr -noout -text
 ```
 
@@ -242,12 +269,18 @@ Certificate Request:
 ```
 
 ### Generate the Certificate
-```
+
+
+
+```command
 openssl x509 -req -in client.csr -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -out client.crt -days 500 -sha256
 ```
 
 ### Look at the Certificate 
-```
+
+
+
+```command
 openssl x509 -in client.crt -text -noout
 
 ```

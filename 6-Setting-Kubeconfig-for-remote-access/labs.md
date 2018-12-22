@@ -4,11 +4,17 @@ Each kubeconfig requires a Kubernetes API Server to connect to. To support high 
 
 - Export Load Balancer IP.
 
+
+
+
 ```command
 export LOADBALANCER_IP=
 ```
 
 - Set a context from a workstation where we have created certificates and keys.
+
+
+
 
 ```command
 
@@ -35,6 +41,9 @@ export LOADBALANCER_IP=
 
 - Check the health of the remote Kubernetes cluster:
 
+
+
+
 ```command
 kubectl get componentstatuses
 ```
@@ -47,6 +56,9 @@ etcd-1               Healthy   {"health":"true"}
 ```
 
 - List the nodes in the remote Kubernetes cluster:
+
+
+
 
 ```command
 kubectl get nodes
@@ -61,11 +73,17 @@ worker-2   Ready    <none>   2m11s   v1.12.0
 
 ## Apply the DNS. [On Master node]
 
+
+
+
 ```command
 kubectl apply -f https://storage.googleapis.com/kubernetes-the-hard-way/coredns.yaml
 ```
 
 - Verify pods are running
+
+
+
 
 ```command
 kubectl get pods -l k8s-app=kube-dns -n kube-system
@@ -77,6 +95,9 @@ coredns-699f8ddd77-sg9jd   1/1     Running   0          18s
 ```
 
 - Cluster info.
+
+
+
 
 ```command
 kubectl cluster-info
