@@ -58,7 +58,7 @@ sudo mkdir -p \
 ```
 
 
-### Configure CNI Networking on both worker-1 and worker-2 nodes.
+### Configure CNI Networking on  worker-1
 
 - Create the `bridge` network configuration file:
 
@@ -93,6 +93,44 @@ cat <<EOF | sudo tee /etc/cni/net.d/99-loopback.conf
 }
 EOF
 ```
+
+### Configure CNI Networking on worker-2 
+
+- Create the `bridge` network configuration file:
+
+```command
+cat <<EOF | sudo tee /etc/cni/net.d/10-bridge.conf
+{
+    "cniVersion": "0.3.1",
+    "name": "bridge",
+    "type": "bridge",
+    "bridge": "cnio0",
+    "isGateway": true,
+    "ipMasq": true,
+    "ipam": {
+        "type": "host-local",
+        "ranges": [
+          [{"subnet": "10.200.1.0/16"}]
+        ],
+        "routes": [{"dst": "0.0.0.0/0"}]
+    }
+}
+EOF
+```
+
+
+- Create the `loopback` network configuration file:
+
+```command
+cat <<EOF | sudo tee /etc/cni/net.d/99-loopback.conf
+{
+    "cniVersion": "0.3.1",
+    "type": "loopback"
+}
+EOF
+```
+
+
 
 ### Configure containerd on both worker-1 and worker-2 nodes.
 
@@ -150,7 +188,7 @@ WantedBy=multi-user.target
 EOF
 ```
 
-### Configure the Kubelet on both worker-1 and worker-2 nodes.
+### Configure the Kubelet on worker-1 
 
 ```command
 {
@@ -185,8 +223,43 @@ tlsPrivateKeyFile: "/var/lib/kubelet/${HOSTNAME}-key.pem"
 EOF
 ```
 
+### Configure the Kubelet on worker-2 
 
-- Create the `kubelet.service` systemd unit file:
+```command
+{
+  sudo mv ${HOSTNAME}-key.pem ${HOSTNAME}.pem /var/lib/kubelet/
+  sudo mv ${HOSTNAME}.kubeconfig /var/lib/kubelet/kubeconfig
+  sudo mv ca.pem /var/lib/kubernetes/
+}
+```
+
+- Create the `kubelet-config.yaml` configuration file:
+
+```command
+cat <<EOF | sudo tee /var/lib/kubelet/kubelet-config.yaml
+kind: KubeletConfiguration
+apiVersion: kubelet.config.k8s.io/v1beta1
+authentication:
+  anonymous:
+    enabled: false
+  webhook:
+    enabled: true
+  x509:
+    clientCAFile: "/var/lib/kubernetes/ca.pem"
+authorization:
+  mode: Webhook
+clusterDomain: "cluster.local"
+clusterDNS:
+  - "10.32.0.10"
+podCIDR: "10.200.1.0/16"
+runtimeRequestTimeout: "15m"
+tlsCertFile: "/var/lib/kubelet/${HOSTNAME}.pem"
+tlsPrivateKeyFile: "/var/lib/kubelet/${HOSTNAME}-key.pem"
+EOF
+```
+
+
+###  Create the `kubelet.service` systemd unit file on both worker-1 and worker-2 nodes.
 
 ```command
 cat <<EOF | sudo tee /etc/systemd/system/kubelet.service

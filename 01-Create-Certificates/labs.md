@@ -14,35 +14,16 @@ worker-1  <WORKER_1_PUBLIC_IP>         <WORKER_1_PRIVATE_IP>
 worker-2  <WORKER_2_PUBLIC_IP>         <WORKER_2_PRIVATE_IP>
 ```
 
-
-
-- Export Load Balancer IP.
-
-```command
-export LOADBALANCER_IP=
-```
-
-- Export other components PrivateIP and PublicIP
-
-```command
-bash env.sh
-```
-
-- Reload shell.
-
-```command
-source ~/.bashrc
-```
-
 - Install `cfssl` on the machine [Workstation] from where you can access all these nodes. The cfssl and cfssljson command line utilities will be used to provision a PKI Infrastructure and generate TLS certificates.
 
 ```command
 wget -q --show-progress --https-only --timestamping \
   https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 \
   https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
-sudo chmod +x cfssl_linux-amd64 cfssljson_linux-amd64
-sudo mv cfssl_linux-amd64 /usr/local/bin/cfssl
-sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
+chmod +x cfssl_linux-amd64 cfssljson_linux-amd64
+mv cfssl_linux-amd64 cfssl
+mv cfssljson_linux-amd64 cfssljson
+export $PATH=PATH:`pwd`
 ```
 
 
