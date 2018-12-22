@@ -99,7 +99,6 @@ EOF
 ```command
 {
 ETCD_NAME=$(hostname -s)
-INTERNAL_IP=<MASTER_2_PRIVATE_IP>
 
 cat <<EOF | sudo tee /etc/systemd/system/etcd.service
 [Unit]
