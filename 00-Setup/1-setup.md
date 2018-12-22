@@ -4,32 +4,6 @@
 - You Must have a DigitalOcean account and `Personal Access Token` must be generated on [DigitalOcean](https://www.digitalocean.com/docs/api/create-personal-access-token/).
 
 
-## Tools
-
-- Install `sudo`. Get a root access in terminal by using `exit`
-
-```command
-apt install sudo
-```
-
-### Install Terraform
-
-- Download [Terraform binary](https://www.terraform.io/intro/getting-started/install.html) and add it to PATH.
-
-```command
-sudo apt install unzip
-wget https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip
-unzip terraform_0.11.7_linux_amd64.zip
-sudo mv terraform /usr/bin/.
-terraform version
-```
-
-- Once you done with installation you will login with username by
-
-```command
-su - $USERNAME
-```
-
 ### Create SSH Keys.
 
 ```command
